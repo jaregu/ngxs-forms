@@ -1,6 +1,6 @@
 {
   "name": "ngxs-forms",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Proper integration of forms in Angular 6 applications using ngxs",
   "module": "ngxs/forms.es5.js",
   "es2015": "ngxs/forms.js",
