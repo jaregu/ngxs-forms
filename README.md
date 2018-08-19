@@ -1,4 +1,4 @@
-# @ngxs-forms
+# ngxs-forms
 
 <!-- [![npm version](https://badge.fury.io/js/@ngxs-forms.svg)](https://www.npmjs.com/package/@ngxs-forms)
 [![Build Status](https://travis-ci.org/MrWolfZ/ngrx-forms.svg?branch=master)](https://travis-ci.org/MrWolfZ/@ngxs-forms)
@@ -10,10 +10,10 @@ This is fork of the best forms implementation for redux style stores. Original *
 
 #### Installation
 ```bash
-npm install @ngxs-forms --save
+npm install ngxs-forms --save
 
 # or if you are using yarn
-yarn add @ngxs-forms
+yarn add ngxs-forms
 ```
 
 This library has a peer dependency on `@angular/core`, `@angular/common`, `@angular/forms`, and `@ngxs/store`, so make sure appropriate versions of those packages are installed.
@@ -27,41 +27,41 @@ import { FormGroupState, createFormGroupState } from 'ngxs-forms';
 // ...
 
 interface FormModel {
-	id: number;
-	name: string;
-
-	// ...
+  id: number;
+  name: string;
+  
+  // ...
 }
 
 interface StateModel {
-	loading: boolean;
-	specialForm: FormGroupState<FormModel>;
-
-	//...
+  loading: boolean;
+  specialForm: FormGroupState<FormModel>;
+  
+  //...
 }
 
 const initialModelState: FormModel = {
-	id: null,
-	name: '',
-
-	// ...
+  id: null,
+  name: '',
+  
+  // ...
 }
 
 const SOME_FORM_ID = '[Some scope] Special form';
 const initialSpecialFormState = createFormGroupState<FormModel>(SOME_FORM_ID, initialModelState);
 
 const initialState: StateModel = {
-	loading: false,
-	specialForm: initialSpecialFormState
+  loading: false,
+  specialForm: initialSpecialFormState
 };
 
 @State<StateModel>({
-	name: 'someSpecialState',
-	defaults: initialState
+  name: 'someSpecialState',
+  defaults: initialState
 })
 export class SpecialState {
-
-	// ...
+  
+  // ...
 }
 ```
 
@@ -70,16 +70,15 @@ Use state in component (no special reducers needed)
 // ...
 
 @Component({
-	selector: 'app-special',
-	template: `
-	<form novalidate [ngrxFormState]="(specialState$ | async).specialForm">
+  selector: 'app-special',
+  template: `
+  <form novalidate [ngrxFormState]="(specialState$ | async).specialForm">
     <input type="text" [ngrxFormControlState]="(specialState$ | async).specialForm.controls.name"></input>
-	</form>
-	`,
+  </form>`,
 })
 export class SomeComponent implements OnInit {
 
-	@Select(SpecialState) specialState$: Observable<StateModel>;
+  @Select(SpecialState) specialState$: Observable<StateModel>;
 
 ```
 
