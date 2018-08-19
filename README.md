@@ -93,4 +93,5 @@ Learn more about **@ngxs/store** store at [github](https://github.com/ngxs/store
 Everything in this repository is [licensed under the MIT License](LICENSE) unless otherwise specified.
 
 Original work Copyright (c) 2017-2018 Jonathan Ziller
+
 Modified work Copyright 2018 Mārcis Meijers
