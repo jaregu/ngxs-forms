@@ -6,7 +6,7 @@ export function disableReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== DisableAction.TYPE) {
+  if (action.type !== DisableAction.type) {
     return state;
   }
 

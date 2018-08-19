@@ -5,7 +5,7 @@ export function setUserDefinedPropertyReducer<TValue extends FormControlValueTyp
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== SetUserDefinedPropertyAction.TYPE) {
+  if (action.type !== SetUserDefinedPropertyAction.type) {
     return state;
   }
 

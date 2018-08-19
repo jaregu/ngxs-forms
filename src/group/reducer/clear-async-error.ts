@@ -6,7 +6,7 @@ export function clearAsyncErrorReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== ClearAsyncErrorAction.TYPE) {
+  if (action.type !== ClearAsyncErrorAction.type) {
     return state;
   }
 

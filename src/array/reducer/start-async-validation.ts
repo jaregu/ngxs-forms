@@ -6,7 +6,7 @@ export function startAsyncValidationReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== StartAsyncValidationAction.TYPE) {
+  if (action.type !== StartAsyncValidationAction.type) {
     return state;
   }
 

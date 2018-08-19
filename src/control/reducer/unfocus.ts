@@ -5,7 +5,7 @@ export function unfocusReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== UnfocusAction.TYPE) {
+  if (action.type !== UnfocusAction.type) {
     return state;
   }
 

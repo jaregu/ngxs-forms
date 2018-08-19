@@ -6,7 +6,7 @@ export function setUserDefinedPropertyReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== SetUserDefinedPropertyAction.TYPE) {
+  if (action.type !== SetUserDefinedPropertyAction.type) {
     return state;
   }
 

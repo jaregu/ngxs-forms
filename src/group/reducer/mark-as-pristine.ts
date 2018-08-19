@@ -6,7 +6,7 @@ export function markAsPristineReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== MarkAsPristineAction.TYPE) {
+  if (action.type !== MarkAsPristineAction.type) {
     return state;
   }
 

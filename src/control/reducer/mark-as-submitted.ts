@@ -5,7 +5,7 @@ export function markAsSubmittedReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== MarkAsSubmittedAction.TYPE) {
+  if (action.type !== MarkAsSubmittedAction.type) {
     return state;
   }
 

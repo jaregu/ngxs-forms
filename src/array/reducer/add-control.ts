@@ -6,7 +6,7 @@ export function addControlReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== AddArrayControlAction.TYPE) {
+  if (action.type !== AddArrayControlAction.type) {
     return state;
   }
 

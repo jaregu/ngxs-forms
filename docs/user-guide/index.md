@@ -8,7 +8,7 @@ Import the module:
 
 ```typescript
 import { StoreModule } from '@ngrx/store';
-import { NgrxFormsModule } from 'ngrx-forms';
+import { NgxsFormsModule } from 'ngxs-forms';
 
 import { reducers } from './reducer';
 
@@ -17,7 +17,7 @@ import { reducers } from './reducer';
     AppComponent,
   ],
   imports: [
-    NgrxFormsModule,
+    NgxsFormsModule,
     StoreModule.forRoot(reducers),
   ],
   providers: [],
@@ -30,7 +30,7 @@ Add a group state somewhere in your state tree via `createFormGroupState` and ca
 
 ```typescript
 import { Action } from '@ngrx/store';
-import { FormGroupState, createFormGroupState, formGroupReducer } from 'ngrx-forms';
+import { FormGroupState, createFormGroupState, formGroupReducer } from 'ngxs-forms';
 
 export interface MyFormValue {
   someTextInput: string;
@@ -83,7 +83,7 @@ Expose the form state inside your component:
 ```typescript
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { FormGroupState } from 'ngrx-forms';
+import { FormGroupState } from 'ngxs-forms';
 import { Observable } from 'rxjs/Observable';
 
 import { MyFormValue } from './reducer';

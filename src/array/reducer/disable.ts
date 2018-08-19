@@ -6,7 +6,7 @@ export function disableReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== DisableAction.TYPE) {
+  if (action.type !== DisableAction.type) {
     return state;
   }
 

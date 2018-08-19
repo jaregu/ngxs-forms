@@ -5,7 +5,7 @@ export function resetReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== ResetAction.TYPE) {
+  if (action.type !== ResetAction.type) {
     return state;
   }
 

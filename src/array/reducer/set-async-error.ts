@@ -7,7 +7,7 @@ export function setAsyncErrorReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== SetAsyncErrorAction.TYPE) {
+  if (action.type !== SetAsyncErrorAction.type) {
     return state;
   }
 

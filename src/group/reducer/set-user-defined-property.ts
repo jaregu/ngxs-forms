@@ -6,7 +6,7 @@ export function setUserDefinedPropertyReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== SetUserDefinedPropertyAction.TYPE) {
+  if (action.type !== SetUserDefinedPropertyAction.type) {
     return state;
   }
 

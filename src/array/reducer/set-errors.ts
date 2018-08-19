@@ -7,7 +7,7 @@ export function setErrorsReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== SetErrorsAction.TYPE) {
+  if (action.type !== SetErrorsAction.type) {
     return state;
   }
 

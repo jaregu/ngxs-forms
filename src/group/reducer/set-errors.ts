@@ -7,7 +7,7 @@ export function setErrorsReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== SetErrorsAction.TYPE) {
+  if (action.type !== SetErrorsAction.type) {
     return state;
   }
 
