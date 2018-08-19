@@ -20,6 +20,27 @@ This library has a peer dependency on `@angular/core`, `@angular/common`, `@angu
 
 #### Quick start
 
+Add NgxsModule to app module
+```typescript
+
+import { NgxsFormsModule } from 'ngxs-forms';
+// ...
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    // ...
+    NgxsFormsModule
+  ],
+  // ...
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
 Define NGXS state
 ```typescript
 import { FormGroupState, createFormGroupState } from 'ngxs-forms';
