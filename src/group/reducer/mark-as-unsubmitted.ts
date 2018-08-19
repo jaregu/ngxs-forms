@@ -6,7 +6,7 @@ export function markAsUnsubmittedReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== MarkAsUnsubmittedAction.TYPE) {
+  if (action.type !== MarkAsUnsubmittedAction.type) {
     return state;
   }
 

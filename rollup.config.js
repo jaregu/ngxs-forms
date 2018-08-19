@@ -5,11 +5,11 @@ const globals = {
   '@angular/core': 'ng.core',
   '@angular/common': 'ng.common',
   '@angular/forms': 'ng.forms',
-  '@ngrx/store': 'ngrx.store',
+  '@ngxs/store': 'ngxs.store',
 };
 
 module.exports = {
-  entry: './dist/ngrx/forms.es5.js',
+  entry: './dist/ngxs/forms.es5.js',
   dest: './dist/bundles/forms.umd.js',
   exports: 'named',
   plugins: [resolve()],

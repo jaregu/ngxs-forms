@@ -5,7 +5,7 @@ export function disableReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== DisableAction.TYPE) {
+  if (action.type !== DisableAction.type) {
     return state;
   }
 

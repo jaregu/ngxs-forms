@@ -1,4 +1,4 @@
-import { ValidationErrors } from 'ngrx-forms';
+import { ValidationErrors } from 'ngxs-forms';
 
 export interface MinLengthValidationError {
   minLength: number;
@@ -7,7 +7,7 @@ export interface MinLengthValidationError {
 }
 
 // @ts-ignore
-declare module 'ngrx-forms/src/state' {
+declare module 'ngxs-forms/src/state' {
   export interface ValidationErrors {
     minLength?: MinLengthValidationError;
   }

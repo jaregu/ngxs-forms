@@ -73,7 +73,7 @@ As mentioned in the section about properties of form controls it is possible to 
 ```typescript
 import { Directive, HostListener, Input } from '@angular/core';
 import { ActionsSubject } from '@ngrx/store';
-import { FormControlState, SetUserDefinedPropertyAction } from 'ngrx-forms';
+import { FormControlState, SetUserDefinedPropertyAction } from 'ngxs-forms';
 
 export const IS_ENTER_PRESSED_PROPERTY = 'isEnterPressed';
 export const ENTER_KEY_CODE = 13;
@@ -137,7 +137,7 @@ Below you can find a full example on how to use a value converter to work with d
 
 ```typescript
 import { Action } from '@ngrx/store';
-import { FormGroupState, createFormGroupState, formGroupReducer } from 'ngrx-forms';
+import { FormGroupState, createFormGroupState, formGroupReducer } from 'ngxs-forms';
 
 export interface MyFormValue {
   date: string;
@@ -170,7 +170,7 @@ export function appReducer(state = initialState, action: Action): AppState {
 ```typescript
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { FormGroupState, NgrxValueConverters } from 'ngrx-forms';
+import { FormGroupState, NgrxValueConverters } from 'ngxs-forms';
 import { Observable } from 'rxjs/Observable';
 
 import { MyFormValue } from './reducer';

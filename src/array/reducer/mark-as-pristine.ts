@@ -6,7 +6,7 @@ export function markAsPristineReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== MarkAsPristineAction.TYPE) {
+  if (action.type !== MarkAsPristineAction.type) {
     return state;
   }
 

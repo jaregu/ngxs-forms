@@ -32,7 +32,7 @@ module.exports = function (config) {
         entrypoints: /\.spec\.(ts|tsx)$/,
         resolve: {
           alias: {
-            'ngrx-forms': '.'
+            'ngxs-forms': '.'
           },
           extensions: ['.js', '.json', '.ts'],
           directories: ['node_modules', '.']

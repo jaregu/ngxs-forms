@@ -6,7 +6,7 @@ export function markAsDirtyReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== MarkAsDirtyAction.TYPE) {
+  if (action.type !== MarkAsDirtyAction.type) {
     return state;
   }
 

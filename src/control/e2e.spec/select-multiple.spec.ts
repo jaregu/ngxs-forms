@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Action, ActionsSubject } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { first, skip } from 'rxjs/operators';
+import { Actions, NgxsModule, ofActionSuccessful } from '@ngxs/store';
+import { first, map } from 'rxjs/operators';
 
 import { MarkAsDirtyAction, SetValueAction } from '../../actions';
 import { box, Boxed } from '../../boxing';
 import { NgrxValueConverters } from '../../control/value-converter';
-import { NgrxFormsModule } from '../../module';
+import { NgxsFormsModule } from '../../module';
 import { createFormControlState, FormControlState } from '../../state';
 
 const SELECT_OPTIONS = ['op1', 'op2'];
@@ -30,8 +29,7 @@ export class SelectMultipleComponent {
 describe(SelectMultipleComponent.name, () => {
   let component: SelectMultipleComponent;
   let fixture: ComponentFixture<SelectMultipleComponent>;
-  let actionsSubject: ActionsSubject;
-  let actions$: Observable<Action>;
+  let actions$: Actions;
   let element: HTMLSelectElement;
   let option1: HTMLOptionElement;
   let option2: HTMLOptionElement;
@@ -39,20 +37,15 @@ describe(SelectMultipleComponent.name, () => {
   const INITIAL_FORM_CONTROL_VALUE = `["${SELECT_OPTIONS[1]}"]`;
   const INITIAL_STATE = createFormControlState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  beforeEach(() => {
-    actionsSubject = new Subject<Action>() as ActionsSubject;
-    actions$ = actionsSubject as Observable<Action>; // cast required due to mismatch of lift() function signature
-  });
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgrxFormsModule],
+      imports: [NgxsFormsModule, NgxsModule.forRoot()],
       declarations: [SelectMultipleComponent],
-      providers: [{ provide: ActionsSubject, useValue: actionsSubject }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    actions$ = TestBed.get(Actions);
     fixture = TestBed.createComponent(SelectMultipleComponent);
     component = fixture.componentInstance;
     component.state = INITIAL_STATE;
@@ -68,8 +61,8 @@ describe(SelectMultipleComponent.name, () => {
   });
 
   it('should trigger a SetValueAction with the selected value when an option is selected', done => {
-    actions$.pipe(first()).subscribe(a => {
-      expect(a.type).toBe(SetValueAction.TYPE);
+    actions$.pipe(first(), map(a => a.action)).subscribe(a => {
+      expect(a.type).toBe(SetValueAction.type);
       expect((a as SetValueAction<string>).value).toBe(JSON.stringify(SELECT_OPTIONS));
       done();
     });
@@ -79,8 +72,8 @@ describe(SelectMultipleComponent.name, () => {
   });
 
   it(`should trigger a ${MarkAsDirtyAction.name} when an option is selected`, done => {
-    actions$.pipe(skip(1), first()).subscribe(a => {
-      expect(a.type).toBe(MarkAsDirtyAction.TYPE);
+    actions$.pipe(ofActionSuccessful(MarkAsDirtyAction)).subscribe(a => {
+      expect(a.type).toBe(MarkAsDirtyAction.type);
       done();
     });
 
@@ -106,8 +99,7 @@ export class SelectMultipleWithoutConverterComponent {
 describe(SelectMultipleWithoutConverterComponent.name, () => {
   let component: SelectMultipleWithoutConverterComponent;
   let fixture: ComponentFixture<SelectMultipleWithoutConverterComponent>;
-  let actionsSubject: ActionsSubject;
-  let actions$: Observable<Action>;
+  let actions$: Actions;
   let element: HTMLSelectElement;
   let option1: HTMLOptionElement;
   let option2: HTMLOptionElement;
@@ -115,20 +107,15 @@ describe(SelectMultipleWithoutConverterComponent.name, () => {
   const INITIAL_FORM_CONTROL_VALUE = box([SELECT_OPTIONS[1]]);
   const INITIAL_STATE = createFormControlState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  beforeEach(() => {
-    actionsSubject = new Subject<Action>() as ActionsSubject;
-    actions$ = actionsSubject as Observable<Action>; // cast required due to mismatch of lift() function signature
-  });
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgrxFormsModule],
+      imports: [NgxsFormsModule, NgxsModule.forRoot()],
       declarations: [SelectMultipleWithoutConverterComponent],
-      providers: [{ provide: ActionsSubject, useValue: actionsSubject }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    actions$ = TestBed.get(Actions);
     fixture = TestBed.createComponent(SelectMultipleWithoutConverterComponent);
     component = fixture.componentInstance;
     component.state = INITIAL_STATE;
@@ -144,8 +131,8 @@ describe(SelectMultipleWithoutConverterComponent.name, () => {
   });
 
   it('should trigger a SetValueAction with the selected value when an option is selected', done => {
-    actions$.pipe(first()).subscribe(a => {
-      expect(a.type).toBe(SetValueAction.TYPE);
+    actions$.pipe(first(), map(a => a.action)).subscribe(a => {
+      expect(a.type).toBe(SetValueAction.type);
       expect((a as SetValueAction<Boxed<string[]>>).value).toEqual(box(SELECT_OPTIONS));
       done();
     });
@@ -155,8 +142,8 @@ describe(SelectMultipleWithoutConverterComponent.name, () => {
   });
 
   it(`should trigger a ${MarkAsDirtyAction.name} when an option is selected`, done => {
-    actions$.pipe(skip(1), first()).subscribe(a => {
-      expect(a.type).toBe(MarkAsDirtyAction.TYPE);
+    actions$.pipe(ofActionSuccessful(MarkAsDirtyAction)).subscribe(a => {
+      expect(a.type).toBe(MarkAsDirtyAction.type);
       done();
     });
 

@@ -5,7 +5,7 @@ export function markAsTouchedReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== MarkAsTouchedAction.TYPE) {
+  if (action.type !== MarkAsTouchedAction.type) {
     return state;
   }
 

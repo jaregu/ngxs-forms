@@ -4,7 +4,7 @@ const shell = require('shelljs');
 const chalk = require('chalk');
 
 const DIST_DIR = `dist`;
-const MODULES_DIR = `${DIST_DIR}/ngrx`;
+const MODULES_DIR = `${DIST_DIR}/ngxs`;
 const BUNDLES_DIR = `${DIST_DIR}/bundles`;
 
 const PACKAGES = [
@@ -14,7 +14,7 @@ const PACKAGES = [
     modulesDir: '.',
     bundleFileName: 'forms',
     moduleFileName: 'forms',
-    moduleName: 'ngrx.forms',
+    moduleName: 'ngxs.forms',
   },
   {
     name: 'validation',
@@ -22,7 +22,7 @@ const PACKAGES = [
     modulesDir: 'forms',
     bundleFileName: 'forms-validation',
     moduleFileName: 'validation',
-    moduleName: 'ngrx.forms-validation',
+    moduleName: 'ngxs.forms-validation',
   },
 ];
 
@@ -52,7 +52,7 @@ for (var pkg of PACKAGES) {
   shell.echo(`Starting bundling...`);
   shell.echo(chalk.gray(`Note: ignore circular dependency warnings to reducer.js, that dependency is intentional`));
   var rollupConfig = require(`${pkg.dir}/rollup.config.js`);
-  if (shell.exec(`rollup -f es -n ngrx.forms -i ${DIST_DIR}/${pkg.dir}/${pkg.bundleFileName}.js -o ${MODULES_DIR}/${pkg.modulesDir}/${pkg.moduleFileName}.js --sourcemap -e ${rollupConfig.external.join(',')}`).code !== 0) {
+  if (shell.exec(`rollup -f es -n ngxs.forms -i ${DIST_DIR}/${pkg.dir}/${pkg.bundleFileName}.js -o ${MODULES_DIR}/${pkg.modulesDir}/${pkg.moduleFileName}.js --sourcemap -e ${rollupConfig.external.join(',')}`).code !== 0) {
     shell.echo(chalk.red(`Error: Bundling failed!`));
     shell.exit(1);
   }

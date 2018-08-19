@@ -1,4 +1,4 @@
-import { ValidationErrors } from 'ngrx-forms';
+import { ValidationErrors } from 'ngxs-forms';
 
 export interface EqualToValidationError<T> {
   comparand: T;
@@ -6,7 +6,7 @@ export interface EqualToValidationError<T> {
 }
 
 // @ts-ignore
-declare module 'ngrx-forms/src/state' {
+declare module 'ngxs-forms/src/state' {
   export interface ValidationErrors {
     equalTo?: EqualToValidationError<any>;
   }

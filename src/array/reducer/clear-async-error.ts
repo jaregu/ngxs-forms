@@ -6,7 +6,7 @@ export function clearAsyncErrorReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== ClearAsyncErrorAction.TYPE) {
+  if (action.type !== ClearAsyncErrorAction.type) {
     return state;
   }
 

@@ -6,7 +6,7 @@ export function resetReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== ResetAction.TYPE) {
+  if (action.type !== ResetAction.type) {
     return state;
   }
 

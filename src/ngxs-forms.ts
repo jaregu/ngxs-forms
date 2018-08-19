@@ -23,7 +23,7 @@ export {
 export { formControlReducer } from './control/reducer';
 export { formGroupReducer } from './group/reducer';
 export { formArrayReducer } from './array/reducer';
-export { formStateReducer, createFormStateReducerWithUpdate } from './reducer';
+export { formStateReducer } from './reducer';
 
 export * from './update-function/update-array';
 export * from './update-function/update-group';
@@ -67,4 +67,4 @@ export { NgrxValueConverter, NgrxValueConverters } from './control/value-convert
 
 export { NGRX_STATUS_CLASS_NAMES, NgrxStatusCssClassesDirective } from './status-css-classes.directive';
 
-export { NgrxFormsModule } from './module';
+export { NgxsFormsModule } from './module';

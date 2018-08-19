@@ -6,7 +6,7 @@ export function markAsUnsubmittedReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== MarkAsUnsubmittedAction.TYPE) {
+  if (action.type !== MarkAsUnsubmittedAction.type) {
     return state;
   }
 

@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "outDir": "../dist/validation",
     "paths": {
-      "ngrx-forms": ["../dist/forms"]
+      "ngxs-forms": ["../dist/forms"]
     },
     "rootDir": ".",
     "sourceMap": true,
@@ -29,6 +29,6 @@
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": false,
     "flatModuleOutFile": "forms-validation.js",
-    "flatModuleId": "ngrx-forms/validation"
+    "flatModuleId": "ngxs-forms/validation"
   }
 }

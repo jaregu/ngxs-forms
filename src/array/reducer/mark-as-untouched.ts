@@ -6,7 +6,7 @@ export function markAsUntouchedReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== MarkAsUntouchedAction.TYPE) {
+  if (action.type !== MarkAsUntouchedAction.type) {
     return state;
   }
 

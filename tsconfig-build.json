@@ -27,6 +27,6 @@
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "flatModuleOutFile": "forms.js",
-    "flatModuleId": "ngrx-forms"
+    "flatModuleId": "ngxs-forms"
   }
 }

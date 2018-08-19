@@ -1,9 +1,9 @@
 {
-  "name": "ngrx-forms",
-  "version": "3.0.2",
-  "description": "Proper integration of forms in Angular 4 applications using ngrx",
-  "module": "ngrx/forms.es5.js",
-  "es2015": "ngrx/forms.js",
+  "name": "ngxs-forms",
+  "version": "3.0.0",
+  "description": "Proper integration of forms in Angular 6 applications using ngxs",
+  "module": "ngxs/forms.es5.js",
+  "es2015": "ngxs/forms.js",
   "main": "bundles/forms.umd.js",
   "scripts": {
     "build": "node build.js",
@@ -15,32 +15,32 @@
     "lint": "tslint --project .",
     "pack-lib": "npm pack ./dist",
     "publish-lib": "npm publish ./dist",
-    "report-coverage": "codecov ./coverage/lcov/lcov.info",
-    "example-install": "npm run build && npm pack ./dist && cd example-app && npm install ../ngrx-forms-%npm_package_version%.tgz && cd .."
+    "report-coverage": "codecov ./coverage/lcov/lcov.info"
   },
   "typings": "./forms.d.ts",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MrWolfZ/ngrx-forms.git"
+    "url": "https://github.com/jaregu/ngxs-forms.git"
   },
   "bugs": {
-    "url": "https://github.com/MrWolfZ/ngrx-forms/issues"
+    "url": "https://github.com/jaregu/ngxs-forms/issues"
   },
-  "homepage": "https://github.com/MrWolfZ/ngrx-forms",
+  "homepage": "https://github.com/jaregu/ngxs-forms",
   "keywords": [
     "angular",
     "javascript",
     "typescript",
-    "ngrx",
+		"ngrx",
+		"ngxs",
     "redux"
   ],
   "license": "MIT",
   "peerDependencies": {
     "@angular/core": ">=6.1.0-rc.3",
     "@angular/common": ">=6.1.0-rc.3",
-    "@angular/forms": ">=6.1.0-rc.3",
-    "@ngrx/store": ">=6.0.1",
+		"@angular/forms": ">=6.1.0-rc.3",
+		"@ngxs/store": ">=3.2.0",
     "typescript": ">=2.8.0"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "@angular/forms": "6.1.0-rc.3",
     "@angular/platform-browser": "6.1.0-rc.3",
     "@angular/platform-browser-dynamic": "6.1.0-rc.3",
-    "@ngrx/store": "6.0.1",
+    "@ngxs/store": "3.2.0",
     "@types/jasmine": "2.8.6",
     "@types/node": "9.6.5",
     "chalk": "2.3.2",

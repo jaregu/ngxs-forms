@@ -6,7 +6,7 @@ export function markAsTouchedReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== MarkAsTouchedAction.TYPE) {
+  if (action.type !== MarkAsTouchedAction.type) {
     return state;
   }
 

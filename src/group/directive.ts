@@ -1,5 +1,5 @@
 import { Directive, HostListener, Input, OnInit } from '@angular/core';
-import { ActionsSubject } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 
 import { MarkAsSubmittedAction } from '../actions';
 import { FormGroupState } from '../state';
@@ -12,7 +12,7 @@ export class NgrxFormDirective<TValue extends { [key: string]: any }> implements
   // tslint:disable-next-line:no-input-rename
   @Input('ngrxFormState') state: FormGroupState<TValue>;
 
-  constructor(private actionsSubject: ActionsSubject) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
     if (!this.state) {
@@ -24,7 +24,7 @@ export class NgrxFormDirective<TValue extends { [key: string]: any }> implements
   onSubmit(event: Event) {
     event.preventDefault();
     if (this.state.isUnsubmitted) {
-      this.actionsSubject.next(new MarkAsSubmittedAction(this.state.id));
+      this.store.dispatch(new MarkAsSubmittedAction(this.state.id));
     }
   }
 }

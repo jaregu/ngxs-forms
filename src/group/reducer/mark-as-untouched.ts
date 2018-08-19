@@ -6,7 +6,7 @@ export function markAsUntouchedReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== MarkAsUntouchedAction.TYPE) {
+  if (action.type !== MarkAsUntouchedAction.type) {
     return state;
   }
 

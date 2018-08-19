@@ -7,7 +7,7 @@ export function setValueReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== SetValueAction.TYPE) {
+  if (action.type !== SetValueAction.type) {
     return state;
   }
 

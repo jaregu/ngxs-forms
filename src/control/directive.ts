@@ -12,7 +12,7 @@ import {
   Self,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ActionsSubject } from '@ngrx/store';
+import { Store } from '@ngxs/store';
 
 import { FocusAction, MarkAsDirtyAction, MarkAsTouchedAction, SetValueAction, UnfocusAction } from '../actions';
 import { FormControlState, FormControlValueTypes } from '../state';
@@ -109,7 +109,7 @@ export class NgrxFormControlDirective<TStateValue extends FormControlValueTypes,
     // for the dom parameter the `null` type must be last to ensure that in the compiled output
     // there is no reference to the Document type to support non-browser platforms
     @Optional() @Inject(DOCUMENT) private dom: Document | null,
-    private actionsSubject: ActionsSubject,
+    private store: Store,
     @Self() @Optional() @Inject(NGRX_FORM_VIEW_ADAPTER) viewAdapters: FormViewAdapter[],
     @Self() @Optional() @Inject(NG_VALUE_ACCESSOR) valueAccessors: ControlValueAccessor[],
   ) {
@@ -191,10 +191,10 @@ export class NgrxFormControlDirective<TStateValue extends FormControlValueTypes,
     const dispatchSetValueAction = () => {
       this.stateValue = this.ngrxValueConverter.convertViewToStateValue(this.viewValue);
       if (this.stateValue !== this.state.value) {
-        this.actionsSubject.next(new SetValueAction(this.state.id, this.stateValue));
+        this.store.dispatch(new SetValueAction(this.state.id, this.stateValue));
 
         if (this.state.isPristine) {
-          this.actionsSubject.next(new MarkAsDirtyAction(this.state.id));
+          this.store.dispatch(new MarkAsDirtyAction(this.state.id));
         }
       }
     };
@@ -209,7 +209,7 @@ export class NgrxFormControlDirective<TStateValue extends FormControlValueTypes,
 
     this.viewAdapter.setOnTouchedCallback(() => {
       if (!this.state.isTouched) {
-        this.actionsSubject.next(new MarkAsTouchedAction(this.state.id));
+        this.store.dispatch(new MarkAsTouchedAction(this.state.id));
       }
 
       if (this.ngrxUpdateOn === BLUR) {
@@ -236,7 +236,7 @@ export class NgrxFormControlDirective<TStateValue extends FormControlValueTypes,
 
     const isControlFocused = this.el.nativeElement === this.dom!.activeElement;
     if (isControlFocused !== this.state.isFocused) {
-      this.actionsSubject.next(isControlFocused ? new FocusAction(this.state.id) : new UnfocusAction(this.state.id));
+      this.store.dispatch(isControlFocused ? new FocusAction(this.state.id) : new UnfocusAction(this.state.id));
     }
   }
 }
