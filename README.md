@@ -20,7 +20,7 @@ This library has a peer dependency on `@angular/core`, `@angular/common`, `@angu
 
 #### Quick start
 
-Add NgxsModule to app module
+Add NgxsFormsModule to root app module
 ```typescript
 
 import { NgxsFormsModule } from 'ngxs-forms';
