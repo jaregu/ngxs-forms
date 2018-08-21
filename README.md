@@ -20,7 +20,7 @@ This library has a peer dependency on `@angular/core`, `@angular/common`, `@angu
 
 #### Quick start
 
-Add NgxsModule to app module
+Add NgxsFormsModule to root app module
 ```typescript
 
 import { NgxsFormsModule } from 'ngxs-forms';
@@ -115,4 +115,4 @@ Everything in this repository is [licensed under the MIT License](LICENSE) unles
 
 Original work Copyright (c) 2017-2018 Jonathan Ziller
 
-Modified work Copyright 2018 Mārcis Meijers
+Modified work Copyright (c) 2018 Mārcis Meijers
