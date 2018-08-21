@@ -1,10 +1,12 @@
 # ngxs-forms
 
-<!-- [![npm version](https://badge.fury.io/js/@ngxs-forms.svg)](https://www.npmjs.com/package/@ngxs-forms)
-[![Build Status](https://travis-ci.org/MrWolfZ/ngrx-forms.svg?branch=master)](https://travis-ci.org/MrWolfZ/@ngxs-forms)
-[![codecov](https://codecov.io/gh/MrWolfZ/ngrx-forms/branch/master/graph/badge.svg)](https://codecov.io/gh/MrWolfZ/ngrx-forms)
+[![npm version](https://badge.fury.io/js/ngxs-forms.svg)](https://www.npmjs.com/package/ngxs-forms)
+[![Build Status](https://travis-ci.org/jaregu/ngxs-forms.svg?branch=master)](https://travis-ci.org/jaregu/ngxs-forms)
+[![codecov](https://codecov.io/gh/jaregu/ngxs-forms/branch/master/graph/badge.svg)](https://codecov.io/gh/jaregu/ngxs-forms)
+[![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+<!-- 
 [![Docs](https://readthedocs.org/projects/ngrx-forms/badge/?version=master)](http://ngrx-forms.readthedocs.io/en/master/?badge=master)
-[![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) -->
+ -->
 
 This is fork of the best forms implementation for redux style stores. Original **ngrx-forms** uses `@ngrx/store`, this fork is updated to be used with **@ngxs/store** store.
 
