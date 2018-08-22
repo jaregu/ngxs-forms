@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NGXS_PLUGINS } from '@ngxs/store';
 
 import { NgrxFormControlDirective } from './control/directive';
@@ -33,12 +33,19 @@ const exportsAndDeclarations = [
 @NgModule({
   declarations: exportsAndDeclarations,
   exports: exportsAndDeclarations,
-  providers: [
-    {
-      provide: NGXS_PLUGINS,
-      useClass: NgxsFormsPlugin,
-      multi: true,
-    },
-  ],
 })
-export class NgxsFormsModule { }
+export class NgxsFormsModule {
+
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: NgxsFormsModule,
+      providers: [
+        {
+          provide: NGXS_PLUGINS,
+          useClass: NgxsFormsPlugin,
+          multi: true,
+        },
+      ],
+    };
+  }
+}
