@@ -101,7 +101,7 @@ Add NgxsFormsModule in feature module and use state in component (no special red
     NgxsFormsModule
   ],
 })
-export class AppModule { }
+export class SomeFeatureModule { }
 
 // ...
 @Component({
