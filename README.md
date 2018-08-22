@@ -22,7 +22,7 @@ This library has a peer dependency on `@angular/core`, `@angular/common`, `@angu
 
 #### Quick start
 
-Add NgxsFormsModule to root app module
+Add NgxsFormsModule.forRoot() to root app module
 ```typescript
 
 import { NgxsFormsModule } from 'ngxs-forms';
@@ -34,7 +34,7 @@ import { NgxsFormsModule } from 'ngxs-forms';
   ],
   imports: [
     // ...
-    NgxsFormsModule
+    NgxsFormsModule.forRoot()
   ],
   // ...
   bootstrap: [AppComponent]
@@ -88,10 +88,22 @@ export class SpecialState {
 }
 ```
 
-Use state in component (no special reducers needed)
+Add NgxsFormsModule in feature module and use state in component (no special reducers needed)
 ```typescript
-// ...
 
+// ...
+@NgModule({
+  declarations: [
+    SomeComponent
+  ],
+  imports: [
+    // ...
+    NgxsFormsModule
+  ],
+})
+export class AppModule { }
+
+// ...
 @Component({
   selector: 'app-special',
   template: `
