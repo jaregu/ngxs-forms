@@ -1,4 +1,4 @@
-import { AbstractControlState, box, unbox, validate } from 'ngrx-forms';
+import { AbstractControlState, box, unbox, validate } from 'ngxs-forms';
 import { required } from './required';
 
 describe(required.name, () => {
