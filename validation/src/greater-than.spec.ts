@@ -1,4 +1,4 @@
-import { AbstractControlState, box, unbox, validate } from 'ngrx-forms';
+import { AbstractControlState, box, unbox, validate } from 'ngxs-forms';
 import { greaterThan } from './greater-than';
 
 describe(greaterThan.name, () => {

@@ -1,4 +1,4 @@
-import { AbstractControlState, box, unbox, validate } from 'ngrx-forms';
+import { AbstractControlState, box, unbox, validate } from 'ngxs-forms';
 import { lessThanOrEqualTo } from './less-than-or-equal-to';
 
 describe(lessThanOrEqualTo.name, () => {
