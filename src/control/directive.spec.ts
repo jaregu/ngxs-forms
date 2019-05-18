@@ -284,14 +284,14 @@ describe(NgrxFormControlDirective.name, () => {
     it('should not dispatch any action even if the view value changed', done => {
       const newValue = 'new value';
 
-      actions$.pipe(count()).subscribe(x => {
+      actions$.pipe(takeUntil(actionsFinished), count()).subscribe(x => {
         expect(x).toEqual(0);
         done();
       });
 
       onChange(newValue);
       onTouched();
-      actionsSubject.complete();
+      actionsFinish();
     });
   });
 
