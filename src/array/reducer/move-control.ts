@@ -27,7 +27,7 @@ export function moveControlReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== MoveArrayControlAction.TYPE) {
+  if (action.type !== MoveArrayControlAction.type) {
     return state;
   }
   if (action.controlId !== state.id) {
