@@ -6,7 +6,7 @@ export function startAsyncValidationReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== StartAsyncValidationAction.TYPE) {
+  if (action.type !== StartAsyncValidationAction.type) {
     return state;
   }
 

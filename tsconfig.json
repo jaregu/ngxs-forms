@@ -11,9 +11,9 @@
     "moduleResolution": "node",
     "rootDir": ".",
     "paths": {
-      "ngrx-forms": [
-        "."
-      ]
+      "ngxs-forms": [
+				"."
+			]
     },
     "sourceMap": true,
     "inlineSources": true,

@@ -94,7 +94,7 @@ Below you can find an example of how this would look. Assume that we have an act
 
 ```typescript
 import { Action } from '@ngrx/store';
-import { FormGroupState, setValue } from 'ngrx-forms';
+import { FormGroupState, setValue } from 'ngxs-forms';
 
 interface DynamicObject {
   id: string;

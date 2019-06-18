@@ -1,31 +1,101 @@
-# ngrx-forms
+# @ngxs-forms
 
-[![npm version](https://badge.fury.io/js/ngrx-forms.svg)](https://www.npmjs.com/package/ngrx-forms)
-[![Build Status](https://travis-ci.org/MrWolfZ/ngrx-forms.svg?branch=master)](https://travis-ci.org/MrWolfZ/ngrx-forms)
+<!-- [![npm version](https://badge.fury.io/js/@ngxs-forms.svg)](https://www.npmjs.com/package/@ngxs-forms)
+[![Build Status](https://travis-ci.org/MrWolfZ/ngrx-forms.svg?branch=master)](https://travis-ci.org/MrWolfZ/@ngxs-forms)
 [![codecov](https://codecov.io/gh/MrWolfZ/ngrx-forms/branch/master/graph/badge.svg)](https://codecov.io/gh/MrWolfZ/ngrx-forms)
 [![Docs](https://readthedocs.org/projects/ngrx-forms/badge/?version=master)](http://ngrx-forms.readthedocs.io/en/master/?badge=master)
-[![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) -->
 
-**ngrx-forms** brings the strengths of the redux state management model to the world of forms in applications that are using Angular and ngrx. The mechanisms that Angular provides for working with forms are inherently mutable, local, and hard to debug. This library offers a different model for working with forms. Instead of storing the state of form controls inside the components we put them in the ngrx store. We update the state with actions which allows easy debugging just like any other redux application. **ngrx-forms** also provides powerful mechanisms to update, validate and generally manage large complex forms. It contains APIs for synchronous and asynchronous validation, creating dynamic forms, integrating with custom form elements, and much more.
-
-To get to know more you can either read the [official documentation](http://ngrx-forms.readthedocs.io/en/master) or visit the [example application](https://ngrx-forms-example-app-v2.herokuapp.com/).
+This is fork of the best forms implementation for redux style stores. Original **ngrx-forms** uses `@ngrx/store`, this fork is updated to be used with **@ngxs/store** store.
 
 #### Installation
-```Shell
-npm install ngrx-forms --save
+```bash
+npm install @ngxs-forms --save
+
+# or if you are using yarn
+yarn add @ngxs-forms
 ```
 
-This library has a peer dependency on `@angular/core`, `@angular/common`, `@angular/forms`, and `@ngrx/store`, so make sure appropriate versions of those packages are installed.
+This library has a peer dependency on `@angular/core`, `@angular/common`, `@angular/forms`, and `@ngxs/store`, so make sure appropriate versions of those packages are installed.
 
-#### Bug reports
+#### Quick start
 
-To report a bug please provide a reproduction of the issue in a code sandbox. You can fork [this example](https://codesandbox.io/s/92r7310k4).
+Define NGXS state
+```typescript
+import { FormGroupState, createFormGroupState } from 'ngxs-forms';
 
-#### Contributing
+// ...
 
-Please see the [documentation](http://ngrx-forms.readthedocs.io/en/master/contributing/).
+interface FormModel {
+	id: number;
+	name: string;
+
+	// ...
+}
+
+interface StateModel {
+	loading: boolean;
+	specialForm: FormGroupState<FormModel>;
+
+	//...
+}
+
+const initialModelState: FormModel = {
+	id: null,
+	name: '',
+
+	// ...
+}
+
+const SOME_FORM_ID = '[Some scope] Special form';
+const initialSpecialFormState = createFormGroupState<FormModel>(SOME_FORM_ID, initialModelState);
+
+const initialState: StateModel = {
+	loading: false,
+	specialForm: initialSpecialFormState
+};
+
+@State<StateModel>({
+	name: 'someSpecialState',
+	defaults: initialState
+})
+export class SpecialState {
+
+	// ...
+}
+```
+
+Use state in component (no special reducers needed)
+```typescript
+// ...
+
+@Component({
+	selector: 'app-special',
+	template: `
+	<form novalidate [ngrxFormState]="(specialState$ | async).specialForm">
+    <input type="text" [ngrxFormControlState]="(specialState$ | async).specialForm.controls.name"></input>
+	</form>
+	`,
+})
+export class SomeComponent implements OnInit {
+
+	@Select(SpecialState) specialState$: Observable<StateModel>;
+
+```
+
+#### Documentation
+Learn more about **ngrx-forms** at [github](https://github.com/MrWolfZ/ngrx-forms)
+or [official ngrx-forms documentation](http://ngrx-forms.readthedocs.io/en/master)
+or visit the [example application](https://ngrx-forms-example-app-v2.herokuapp.com/).
+
+Learn more about **@ngxs/store** store at [github](https://github.com/ngxs/store) or visit [homepage](http://ngxs.io).
 
 #### License
 Everything in this repository is [licensed under the MIT License](LICENSE) unless otherwise specified.
 
+<<<<<<< HEAD
 Copyright (c) 2017-present Jonathan Ziller
+=======
+Original work Copyright (c) 2017-2019 Jonathan Ziller
+Modified work Copyright 2018-2019 Mārcis Meijers
+>>>>>>> Change and update to support ngxs store

@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Action, ActionsSubject } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { bufferCount, skip, take } from 'rxjs/operators';
+import { Actions, NgxsModule, ofActionSuccessful } from '@ngxs/store';
+import { bufferCount, map, take } from 'rxjs/operators';
 
 import { MarkAsDirtyAction, SetValueAction } from '../../actions';
-import { NgrxFormsModule } from '../../module';
+import { NgxsFormsModule } from '../../module';
 import { createFormControlState, FormControlState } from '../../state';
 
 const RADIO_OPTIONS = ['op1', 'op2'];
@@ -24,24 +23,17 @@ export class RadioTestComponent {
 describe(RadioTestComponent.name, () => {
   let component: RadioTestComponent;
   let fixture: ComponentFixture<RadioTestComponent>;
-  let actionsSubject: ActionsSubject;
-  let actions$: Observable<Action>;
+  let actions$: Actions;
   let element1: HTMLInputElement;
   let element2: HTMLInputElement;
   const FORM_CONTROL_ID = 'test ID';
   const INITIAL_FORM_CONTROL_VALUE = RADIO_OPTIONS[1];
   const INITIAL_STATE = createFormControlState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  beforeEach(() => {
-    actionsSubject = new Subject<Action>() as ActionsSubject;
-    actions$ = actionsSubject as Observable<Action>; // cast required due to mismatch of lift() function signature
-  });
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgrxFormsModule],
+      imports: [NgxsFormsModule, NgxsModule.forRoot()],
       declarations: [RadioTestComponent],
-      providers: [{ provide: ActionsSubject, useValue: actionsSubject }],
     }).compileComponents();
   }));
 
@@ -50,6 +42,7 @@ describe(RadioTestComponent.name, () => {
     component = fixture.componentInstance;
     component.state = INITIAL_STATE;
     fixture.detectChanges();
+    actions$ = TestBed.get(Actions);
     element1 = (fixture.nativeElement as HTMLElement).querySelectorAll('input')[0];
     element2 = (fixture.nativeElement as HTMLElement).querySelectorAll('input')[1];
   });
@@ -77,8 +70,8 @@ describe(RadioTestComponent.name, () => {
   });
 
   it(`should trigger a ${SetValueAction.name} with the selected value when an option is selected`, done => {
-    actions$.pipe(take(1)).subscribe(a => {
-      expect(a.type).toBe(SetValueAction.TYPE);
+    actions$.pipe(take(1), map(a => a.action)).subscribe(a => {
+      expect(a.type).toBe(SetValueAction.type);
       expect((a as SetValueAction<string>).value).toBe(RADIO_OPTIONS[0]);
       done();
     });
@@ -87,8 +80,8 @@ describe(RadioTestComponent.name, () => {
   });
 
   it(`should trigger a ${MarkAsDirtyAction.name} when an option is selected`, done => {
-    actions$.pipe(skip(1), take(1)).subscribe(a => {
-      expect(a.type).toBe(MarkAsDirtyAction.TYPE);
+    actions$.pipe(ofActionSuccessful(MarkAsDirtyAction)).subscribe(a => {
+      expect(a.type).toBe(MarkAsDirtyAction.type);
       done();
     });
 
@@ -96,11 +89,11 @@ describe(RadioTestComponent.name, () => {
   });
 
   it(`should trigger ${SetValueAction.name}s and ${MarkAsDirtyAction.name}s when switching between options`, done => {
-    actions$.pipe(bufferCount(4), take(1)).subscribe(([a1, a2, a3, a4]) => {
-      expect(a1.type).toBe(SetValueAction.TYPE);
-      expect(a2.type).toBe(MarkAsDirtyAction.TYPE);
-      expect(a3.type).toBe(SetValueAction.TYPE);
-      expect(a4.type).toBe(MarkAsDirtyAction.TYPE);
+    actions$.pipe(ofActionSuccessful(SetValueAction, MarkAsDirtyAction), bufferCount(4), take(1)).subscribe(([a1, a2, a3, a4]) => {
+      expect(a1.type).toBe(SetValueAction.type);
+      expect(a2.type).toBe(MarkAsDirtyAction.type);
+      expect(a3.type).toBe(SetValueAction.type);
+      expect(a4.type).toBe(MarkAsDirtyAction.type);
       expect((a1 as SetValueAction<string>).value).toBe(RADIO_OPTIONS[0]);
       expect((a3 as SetValueAction<string>).value).toBe(RADIO_OPTIONS[1]);
       done();
@@ -115,8 +108,8 @@ describe(RadioTestComponent.name, () => {
   it(`should trigger a ${SetValueAction.name} if the value of the selected option changes`, done => {
     const newValue = 'new value';
 
-    actions$.pipe(take(1)).subscribe(a => {
-      expect(a.type).toBe(SetValueAction.TYPE);
+    actions$.pipe(take(1), map(a => a.action)).subscribe(a => {
+      expect(a.type).toBe(SetValueAction.type);
       expect((a as SetValueAction<string>).value).toBe(newValue);
       done();
     });

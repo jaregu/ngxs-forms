@@ -1,5 +1,3 @@
-import { Action } from '@ngrx/store';
-
 import {
   Actions,
   AddGroupControlAction,
@@ -44,10 +42,10 @@ export function formArrayReducerInternal<TValue>(state: FormArrayState<TValue>, 
   }
 
   switch (action.type) {
-    case FocusAction.TYPE:
-    case UnfocusAction.TYPE:
-    case AddGroupControlAction.TYPE:
-    case RemoveGroupControlAction.TYPE:
+    case FocusAction.type:
+    case UnfocusAction.type:
+    case AddGroupControlAction.type:
+    case RemoveGroupControlAction.type:
       return childReducer(state, action);
 
     default:
@@ -80,7 +78,7 @@ export function formArrayReducerInternal<TValue>(state: FormArrayState<TValue>, 
 /**
  * This reducer function updates a form array state with actions.
  */
-export function formArrayReducer<TValue>(state: FormArrayState<TValue> | undefined, action: Action) {
+export function formArrayReducer<TValue>(state: FormArrayState<TValue> | undefined, action: any) {
   if (!state) {
     throw new Error('The array state must be defined!');
   }

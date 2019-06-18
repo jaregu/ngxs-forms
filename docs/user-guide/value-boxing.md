@@ -3,7 +3,7 @@ Most HTML form elements have primitive values (e.g. text inputs have `string` va
 Boxing is very simple to use. For proper type inference at compile time you have to declare a value to be boxed like this:
 
 ```typescript
-import { Boxed } from 'ngrx-forms';
+import { Boxed } from 'ngxs-forms';
 
 interface MyFormValue {
   selections: Boxed<string[]>;
@@ -13,7 +13,7 @@ interface MyFormValue {
 Then you have to `box` the value when creating the form state:
 
 ```typescript
-import { box, createFormGroupState } from 'ngrx-forms';
+import { box, createFormGroupState } from 'ngxs-forms';
 
 const formState = createFormGroupState<MyFormValue>('form ID', {
   selections: box([]),
@@ -23,7 +23,7 @@ const formState = createFormGroupState<MyFormValue>('form ID', {
 You also need to `box` values when setting values on an existing form state:
 
 ```typescript
-import { setValue, updateGroup } from 'ngrx-forms';
+import { setValue, updateGroup } from 'ngxs-forms';
 
 const updatedFormState = updateGroup<MyFormValue>(formState, {
   selections: setValue(box(['A', 'B']));
@@ -35,7 +35,7 @@ const updatedFormState = updateGroup<MyFormValue>(formState, {
 Lastly, to access the form's value without the boxing wrapper objects you can use the `unbox` function like this:
 
 ```typescript
-import { unbox } from 'ngrx-forms';
+import { unbox } from 'ngxs-forms';
 
 const formValueWithBoxWrapper = updatedFormState.value; // { selections: { __marker: '...', value: ['A', 'B'] } }
 const unboxedFormValue = unbox(updatedFormState.value); // { selections: ['A', 'B'] }

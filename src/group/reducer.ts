@@ -1,5 +1,3 @@
-import { Action } from '@ngrx/store';
-
 import {
   Actions,
   AddArrayControlAction,
@@ -42,10 +40,10 @@ export function formGroupReducerInternal<TValue extends KeyValue>(state: FormGro
   }
 
   switch (action.type) {
-    case FocusAction.TYPE:
-    case UnfocusAction.TYPE:
-    case AddArrayControlAction.TYPE:
-    case RemoveArrayControlAction.TYPE:
+    case FocusAction.type:
+    case UnfocusAction.type:
+    case AddArrayControlAction.type:
+    case RemoveArrayControlAction.type:
       return childReducer(state, action);
 
     default:
@@ -76,7 +74,7 @@ export function formGroupReducerInternal<TValue extends KeyValue>(state: FormGro
 /**
  * This reducer function updates a form group state with actions.
  */
-export function formGroupReducer<TValue extends KeyValue>(state: FormGroupState<TValue> | undefined, action: Action) {
+export function formGroupReducer<TValue extends KeyValue>(state: FormGroupState<TValue> | undefined, action: any) {
   if (!state) {
     throw new Error('The group state must be defined!');
   }

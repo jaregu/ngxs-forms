@@ -6,7 +6,7 @@ export function setAsyncErrorReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== SetAsyncErrorAction.TYPE) {
+  if (action.type !== SetAsyncErrorAction.type) {
     return state;
   }
 

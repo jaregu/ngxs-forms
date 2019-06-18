@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
+import { NGXS_PLUGINS } from '@ngxs/store';
 
 import { NgrxFormControlDirective } from './control/directive';
 import { NgrxFormDirective } from './group/directive';
+import { NgxsFormsPlugin } from './ngxs-forms.plugin';
 import { NgrxStatusCssClassesDirective } from './status-css-classes.directive';
 import { NgrxCheckboxViewAdapter } from './view-adapter/checkbox';
 import { NgrxDefaultViewAdapter } from './view-adapter/default';
@@ -31,5 +33,12 @@ const exportsAndDeclarations = [
 @NgModule({
   declarations: exportsAndDeclarations,
   exports: exportsAndDeclarations,
+  providers: [
+    {
+      provide: NGXS_PLUGINS,
+      useClass: NgxsFormsPlugin,
+      multi: true,
+    },
+  ],
 })
-export class NgrxFormsModule { }
+export class NgxsFormsModule { }

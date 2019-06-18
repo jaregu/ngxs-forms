@@ -6,7 +6,7 @@ export function resetReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== ResetAction.TYPE) {
+  if (action.type !== ResetAction.type) {
     return state;
   }
 

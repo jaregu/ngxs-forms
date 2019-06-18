@@ -6,7 +6,7 @@ export function markAsTouchedReducer<TValue>(
   state: FormArrayState<TValue>,
   action: Actions<TValue[]>,
 ): FormArrayState<TValue> {
-  if (action.type !== MarkAsTouchedAction.TYPE) {
+  if (action.type !== MarkAsTouchedAction.type) {
     return state;
   }
 

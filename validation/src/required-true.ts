@@ -1,4 +1,4 @@
-import { Boxed, unbox, ValidationErrors } from 'ngrx-forms';
+import { Boxed, unbox, ValidationErrors } from 'ngxs-forms';
 
 /**
  * A validation function that requires the value to be `true`. Considers `null` and

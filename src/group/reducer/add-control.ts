@@ -6,7 +6,7 @@ export function addControlReducer<TValue extends KeyValue>(
   state: FormGroupState<TValue>,
   action: Actions<TValue>,
 ): FormGroupState<TValue> {
-  if (action.type !== AddGroupControlAction.TYPE) {
+  if (action.type !== AddGroupControlAction.type) {
     return state;
   }
 

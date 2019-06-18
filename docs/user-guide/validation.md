@@ -21,7 +21,7 @@ The following table lists all validation functions provided by **ngrx-forms**.
 Below you can see an example of how these functions can be used:
 
 ```typescript
-import { updateGroup, validate } from 'ngrx-forms';
+import { updateGroup, validate } from 'ngxs-forms';
 import { required, greaterThanOrEqualTo, lessThan } from 'ngrx-forms/validation';
 
 export interface NestedValue {
@@ -141,7 +141,7 @@ If you are using `@ngrx/effects` your validation might look like this:
 ```typescript
 @Effect()
 validateBookExists$: Observable<Action> = this.actions$
-  .ofType(StartBookSearchAction.TYPE)
+  .ofType(StartBookSearchAction.type)
   .switchMap(a =>
     this.http.get(`api/books/search/${a.searchTerm}`)
       .map(resp =>

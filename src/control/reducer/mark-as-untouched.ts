@@ -5,7 +5,7 @@ export function markAsUntouchedReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== MarkAsUntouchedAction.TYPE) {
+  if (action.type !== MarkAsUntouchedAction.type) {
     return state;
   }
 

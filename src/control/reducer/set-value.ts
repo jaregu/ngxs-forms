@@ -5,7 +5,7 @@ export function setValueReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== SetValueAction.TYPE) {
+  if (action.type !== SetValueAction.type) {
     return state;
   }
 

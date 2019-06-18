@@ -31,7 +31,7 @@ describe('form array reducer', () => {
   const INITIAL_FORM_CONTROL_VALUE: FormArrayValue = [''];
   const INITIAL_STATE = createFormArrayState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  it('should skip any non-ngrx-forms action', () => {
+  it('should skip any non-ngxs-forms action', () => {
     const resultState = formArrayReducer(INITIAL_STATE, { type: '' } as any);
     expect(resultState).toBe(INITIAL_STATE);
   });

@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Action, ActionsSubject } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { first, skip } from 'rxjs/operators';
+import { Actions, NgxsModule, ofActionSuccessful } from '@ngxs/store';
+import { first, map } from 'rxjs/operators';
 
 import { MarkAsDirtyAction, SetValueAction } from '../../actions';
-import { NgrxFormsModule } from '../../module';
+import { NgxsFormsModule } from '../../module';
 import { createFormControlState, FormControlState } from '../../state';
 
 const SELECT_OPTIONS = ['op1', 'op2'];
@@ -32,8 +31,7 @@ export class SelectFallbackComponent {
 describe(SelectComponent.name, () => {
   let component: SelectComponent;
   let fixture: ComponentFixture<SelectComponent>;
-  let actionsSubject: ActionsSubject;
-  let actions$: Observable<Action>;
+  let actions$: Actions;
   let element: HTMLSelectElement;
   let option1: HTMLOptionElement;
   let option2: HTMLOptionElement;
@@ -41,20 +39,15 @@ describe(SelectComponent.name, () => {
   const INITIAL_FORM_CONTROL_VALUE = SELECT_OPTIONS[1];
   const INITIAL_STATE = createFormControlState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  beforeEach(() => {
-    actionsSubject = new Subject<Action>() as ActionsSubject;
-    actions$ = actionsSubject as Observable<Action>; // cast required due to mismatch of lift() function signature
-  });
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgrxFormsModule],
+      imports: [NgxsFormsModule, NgxsModule.forRoot()],
       declarations: [SelectComponent, SelectFallbackComponent],
-      providers: [{ provide: ActionsSubject, useValue: actionsSubject }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    actions$ = TestBed.get(Actions);
     fixture = TestBed.createComponent(SelectComponent);
     component = fixture.componentInstance;
     component.state = INITIAL_STATE;
@@ -69,8 +62,8 @@ describe(SelectComponent.name, () => {
   });
 
   it(`should trigger a ${SetValueAction.name} with the selected value when an option is selected`, done => {
-    actions$.pipe(first()).subscribe(a => {
-      expect(a.type).toBe(SetValueAction.TYPE);
+    actions$.pipe(first(), map(a => a.action)).subscribe(a => {
+      expect(a.type).toBe(SetValueAction.type);
       expect((a as SetValueAction<string>).value).toBe(SELECT_OPTIONS[0]);
       done();
     });
@@ -80,8 +73,8 @@ describe(SelectComponent.name, () => {
   });
 
   it(`should trigger a ${MarkAsDirtyAction.name} when an option is selected`, done => {
-    actions$.pipe(skip(1), first()).subscribe(a => {
-      expect(a.type).toBe(MarkAsDirtyAction.TYPE);
+    actions$.pipe(ofActionSuccessful(MarkAsDirtyAction)).subscribe(a => {
+      expect(a.type).toBe(MarkAsDirtyAction.type);
       done();
     });
 
@@ -116,28 +109,22 @@ export class NumberSelectComponent {
 describe(NumberSelectComponent.name, () => {
   let component: NumberSelectComponent;
   let fixture: ComponentFixture<NumberSelectComponent>;
-  let actionsSubject: ActionsSubject;
-  let actions$: Observable<Action>;
+  let actions$: Actions;
   let element: HTMLSelectElement;
   let option2: HTMLOptionElement;
   const FORM_CONTROL_ID = 'test ID';
   const INITIAL_FORM_CONTROL_VALUE = SELECT_NUMBER_OPTIONS[1];
   const INITIAL_STATE = createFormControlState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  beforeEach(() => {
-    actionsSubject = new Subject<Action>() as ActionsSubject;
-    actions$ = actionsSubject as Observable<Action>; // cast required due to mismatch of lift() function signature
-  });
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgrxFormsModule],
+      imports: [NgxsFormsModule, NgxsModule.forRoot()],
       declarations: [NumberSelectComponent],
-      providers: [{ provide: ActionsSubject, useValue: actionsSubject }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    actions$ = TestBed.get(Actions);
     fixture = TestBed.createComponent(NumberSelectComponent);
     component = fixture.componentInstance;
     component.state = INITIAL_STATE;
@@ -152,8 +139,8 @@ describe(NumberSelectComponent.name, () => {
   });
 
   it(`should trigger a ${SetValueAction.name} with the selected value when an option is selected`, done => {
-    actions$.pipe(first()).subscribe(a => {
-      expect(a.type).toBe(SetValueAction.TYPE);
+    actions$.pipe(first(), map(a => a.action)).subscribe(a => {
+      expect(a.type).toBe(SetValueAction.type);
       expect((a as SetValueAction<number>).value).toBe(SELECT_NUMBER_OPTIONS[0]);
       done();
     });
@@ -163,8 +150,8 @@ describe(NumberSelectComponent.name, () => {
   });
 
   it(`should trigger a ${MarkAsDirtyAction.name} when an option is selected`, done => {
-    actions$.pipe(skip(1), first()).subscribe(a => {
-      expect(a.type).toBe(MarkAsDirtyAction.TYPE);
+    actions$.pipe(ofActionSuccessful(MarkAsDirtyAction)).subscribe(a => {
+      expect(a.type).toBe(MarkAsDirtyAction.type);
       done();
     });
 

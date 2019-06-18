@@ -5,7 +5,7 @@ export function markAsDirtyReducer<TValue extends FormControlValueTypes>(
   state: FormControlState<TValue>,
   action: Actions<TValue>,
 ): FormControlState<TValue> {
-  if (action.type !== MarkAsDirtyAction.TYPE) {
+  if (action.type !== MarkAsDirtyAction.type) {
     return state;
   }
 

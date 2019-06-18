@@ -1,5 +1,3 @@
-import { Action } from '@ngrx/store';
-
 import { Actions } from '../actions';
 import { FormControlState, FormControlValueTypes, isArrayState, isGroupState } from '../state';
 import { clearAsyncErrorReducer } from './reducer/clear-async-error';
@@ -56,7 +54,7 @@ export function formControlReducerInternal<TValue extends FormControlValueTypes>
 /**
  * This reducer function updates a form control state with actions.
  */
-export function formControlReducer<TValue extends FormControlValueTypes>(state: FormControlState<TValue> | undefined, action: Action) {
+export function formControlReducer<TValue extends FormControlValueTypes>(state: FormControlState<TValue> | undefined, action: any) {
   if (!state) {
     throw new Error('The control state must be defined!');
   }

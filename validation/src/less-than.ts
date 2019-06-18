@@ -1,4 +1,4 @@
-import { Boxed, unbox, ValidationErrors } from 'ngrx-forms';
+import { Boxed, unbox, ValidationErrors } from 'ngxs-forms';
 
 export interface LessThanValidationError {
   comparand: number;
@@ -6,7 +6,7 @@ export interface LessThanValidationError {
 }
 
 // @ts-ignore
-declare module 'ngrx-forms/src/state' {
+declare module 'ngxs-forms/src/state' {
   export interface ValidationErrors {
     lessThan?: LessThanValidationError;
   }

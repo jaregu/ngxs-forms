@@ -1,5 +1,5 @@
 {
-  "name": "ngrx-forms/validation",
+  "name": "ngxs-forms/validation",
   "ngPackage": {
     "lib": {
       "entryFile": "public_api.ts"
