@@ -127,9 +127,6 @@ Learn more about **@ngxs/store** store at [github](https://github.com/ngxs/store
 #### License
 Everything in this repository is [licensed under the MIT License](LICENSE) unless otherwise specified.
 
-<<<<<<< HEAD
-Copyright (c) 2017-present Jonathan Ziller
-=======
-Original work Copyright (c) 2017-2019 Jonathan Ziller
-Modified work Copyright 2018-2019 Mārcis Meijers
->>>>>>> Change and update to support ngxs store
+Original work Copyright (c) 2017-present Jonathan Ziller
+
+Modified work Copyright 2018-present Mārcis Meijers
