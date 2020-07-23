@@ -1,14 +1,10 @@
 sudo: required
 dist: trusty
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
+  chrome: stable
 language: node_js
 node_js:
-  - 8
+  - 10
 before_install:
   - npm i npm@^5 -g
 install:
@@ -16,7 +12,7 @@ install:
 script:
   - npm run build
   - npm run test-no-progress
-  - npm run dtslint
+  # - npm run dtslint
 after_success:
   - npm run report-coverage
 before_script:

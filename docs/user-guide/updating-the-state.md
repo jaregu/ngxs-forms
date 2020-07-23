@@ -1,5 +1,115 @@
 All form states are internally updated by **ngrx-forms** through dispatching actions from the directives. While this is of course also possible for you there exist a set of update functions that can be used to update form states. This is mainly useful to change the state as a result of a different action in your reducer. Note that **ngrx-forms** is coded in such a way that no state references will change if nothing inside the state changes. It is therefore perfectly safe to repeatedly call any of the functions below and the state will be updated exactly once or not at all if nothing changed. Each function can be imported from `'ngrx-forms'` (e.g. `import { setValue } from 'ngxs-forms';`).
 
+Usually you will update your form states in your reducers. The following example shows how this can be done.
+
+```ts
+import { Action } from '@ngrx/store';
+import { createFormGroupState, updateGroup, validate } from 'ngrx-forms';
+
+export interface LoginFormValue {
+  username: string;
+  password: string;
+  stayLoggedIn: boolean;
+}
+
+export const initialLoginFormValue: LoginFormValue = {
+  username: '',
+  password: '',
+  stayLoggedIn: false,
+};
+
+// this function updates a form group state based on the passed
+// update functions (see the sections below for more details on
+// all available update functions as well as on updating groups)
+export const validateLoginForm = updateGroup<LoginFormValue>({
+  username: validate(value => !value ? { missing: true } : {}),
+  // other updates...
+});
+
+const initialState = {
+  loginForm: createFormGroupState('loginForm', initialLoginFormValue),
+  // your other properties...
+};
+
+export function reducer(state = initialState, action: Action) {
+  const loginForm = validateLoginForm(formGroupReducer(state.loginForm, action));
+  if (loginForm !== state.loginForm) {
+    state = { ...state, loginForm };
+  }
+
+  switch (action.type) {
+    case 'some action type':
+      // modify state
+      return state;
+
+    default: {
+      return state;
+    }
+  }
+}
+```
+
+If you are using ngrx version 8 or above you can alternatively use `onNgrxForms`, `onNgrxFormsAction`, and `wrapReducerWithFormStateUpdate` with `createReducer`:
+
+```ts
+import { createReducer } from '@ngrx/store';
+import { onNgrxForms, onNgrxFormsAction, wrapReducerWithFormStateUpdate } from 'ngrx-forms';
+
+const rawReducer = createReducer(
+  initialState,
+
+  // this function automatically calls the appropriate reducer
+  // for all form states on the state
+  onNgrxForms(),
+
+  // use this to call a reducer for a specific ngrx-forms action;
+  // note that this must be placed after onNgrxForms
+  onNgrxFormsAction(SetValueAction, (state, action) => {
+    if (action.controlId === 'loginForm.username') {
+      // react to username changing...
+      // action is of type SetValueAction
+    }
+
+    return state;
+  }),
+  // your other reducers...
+);
+
+// wrapReducerWithFormStateUpdate calls the update function
+// after the given reducer; you can wrap this reducer again
+// if you have multiple forms in your state
+export const reducer = wrapReducerWithFormStateUpdate(
+  rawReducer,
+  // point to the form state to update
+  s => s.loginForm,
+  // this function is always called after the reducer
+  validateLoginForm,
+);
+```
+
+`onNgrxForms` also works if the reduced state itself is a form state:
+
+```ts
+import { createReducer } from '@ngrx/store';
+import { onNgrxForms, wrapReducerWithFormStateUpdate } from 'ngrx-forms';
+
+const initialState = createFormGroupState('loginForm', initialLoginFormValue)
+
+// this reducer is equivalent to the `formStateReducer` provided by
+// ngrx-forms, but it allows you simple composition of additional
+// action handlers; this style also makes your reducer more consistent
+// with your other reducers that use `onX` handlers
+export const reducer = createReducer(
+  initialState,
+
+  // this function automatically calls the appropriate reducer
+  // for the form state
+  onNgrxForms(),
+
+  // your other reducers...
+);
+```
+
 Below you will find a complete list of all update functions provided by **ngrx-forms**. Each section also shows how to use actions directly instead of the update functions (the examples directly call the `formStateReducer` but you can of course dispatch these actions from anywhere in your code). To view all available actions the best place is [the code itself](https://github.com/MrWolfZ/ngrx-forms/blob/master/src/actions.ts).
 
 #### Setting the value
@@ -284,7 +394,7 @@ export interface MyFormValue {
   someNumbers: number[];
 }
 
-const updateMyFormGroup = updateGroup<MyFormValue>({
+const validateMyForm = updateGroup<MyFormValue>({
   someTextInput: validate(required),
   nested: updateGroup<MyFormValue['nested']>({
     someNumber: validate(required, greaterThanOrEqualTo(2)),
@@ -293,7 +403,7 @@ const updateMyFormGroup = updateGroup<MyFormValue>({
 });
 ```
 
-The `updateMyFormGroup` function has a signature of `FormGroupState<MyFormValue> -> FormGroupState<MyFormValue>`. It takes a state, runs all validations, updates the errors, and returns the resulting state.
+The `validateMyForm` function has a signature of `FormGroupState<MyFormValue> -> FormGroupState<MyFormValue>`. It takes a state, runs all validations, updates the errors, and returns the resulting state.
 
 In addition, the `updateGroup` function allows specifying as many update function objects as you want and applies all of them after another. This is useful if you have dependencies between your update functions where one function's result may affect the result of another function. The following (contrived) example shows how to set the value of `someNumber` based on the `errors` of `someTextInput`.
 

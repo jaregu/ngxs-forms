@@ -1,5 +1,204 @@
 ## ngrx-forms Changelog
 
+<a name="6.3.3"></a>
+### 6.3.3
+
+#### Bugfixes
+
+* make `wrapReducerWithFormStateUpdate` work properly if used on states that are form states themselves ([9907718](https://github.com/MrWolfZ/ngrx-forms/commit/9907718)), closes [#196](https://github.com/MrWolfZ/ngrx-forms/issues/196)
+
+<a name="6.3.2"></a>
+### 6.3.2
+
+#### Bugfixes
+
+* export missing update functions `moveArrayControl` and `swapArrayControl` ([#193](https://github.com/MrWolfZ/ngrx-forms/pull/193)), thanks @jamie94bc for this fix
+
+<a name="6.3.1"></a>
+### 6.3.1
+
+#### Bugfixes
+
+* allow `undefined` property values in boxed objects, thanks @alex-vg for reporting this bug ([22b2667](https://github.com/MrWolfZ/ngrx-forms/commit/22b2667)), closes [#186](https://github.com/MrWolfZ/ngrx-forms/issues/186)
+
+<a name="6.3.0"></a>
+### 6.3.0
+
+#### Features
+
+* allow `onNgrxForms` to work on form states directly instead of requiring form states to be direct children of reduced states ([b81abb4](https://github.com/MrWolfZ/ngrx-forms/commit/b81abb4))
+
+<a name="6.2.0"></a>
+### 6.2.0
+
+#### Features
+
+* add new validation function `number` to validate a value is a number (useful in cases where the concrete type of a value is unknown) ([#182](https://github.com/MrWolfZ/ngrx-forms/pull/182)), thanks @dzonatan for implementing this feature
+* ignore non-numeric values in `lessThan`, `lessThanOrEqualTo`, `greaterThan`, and `greaterThanOrEqualTo` validation functions ([#182](https://github.com/MrWolfZ/ngrx-forms/pull/182)), thanks @dzonatan for this change
+* export the `NGRX_UPDATE_ON_TYPE` enum ([#184](https://github.com/MrWolfZ/ngrx-forms/pull/184)), thanks @dzonatan for this change
+
+<a name="6.1.0"></a>
+### 6.1.0
+
+#### Features
+
+* add support for local form states outside of the ngrx store ([#166](https://github.com/MrWolfZ/ngrx-forms/pull/166)), closes [#165](https://github.com/MrWolfZ/ngrx-forms/issues/165), see the [user guide](http://ngrx-forms.readthedocs.io/en/master/user-guide/local-form-state/) for more details, thanks @mucaho for implementing this great feature
+
+<a name="6.0.0"></a>
+### 6.0.0
+
+This major release contains only a bugfix which is a breaking change.
+
+#### Breaking Changes
+
+* do not treat empty strings or arrays as an error in `minLength` validation function ([#164](https://github.com/MrWolfZ/ngrx-forms/pull/164)), thanks @Sloff for reporting and fixing this bug
+
+  If you require these values to be treated as errors use `minLength` together with `required` (e.g. `validate(required, minLength(2))`)
+
+<a name="5.2.3"></a>
+### 5.2.3
+
+#### Bugfixes
+
+* use project tsconfig.json with ng-packagr during build; this bug lead to incorrect type definitions ([#163](https://github.com/MrWolfZ/ngrx-forms/pull/163)), thanks @tomvandezande for reporting and fixing this bug
+
+<a name="5.2.2"></a>
+### 5.2.2
+
+This version is skipped due to an invalid package having been published.
+
+<a name="5.2.1"></a>
+### 5.2.1
+
+#### Bugfixes
+
+* ensure form states are correctly updated from actions when using `onNgrxFormsAction` with `onNgrxForms` ([ee5dccf](https://github.com/MrWolfZ/ngrx-forms/commit/ee5dccf))
+
+<a name="5.2.0"></a>
+### 5.2.0
+
+#### Features
+
+* add function `onNgrxFormsAction` that allows specifying a reducer for **ngrx-forms** actions with `createReducer` from ngrx 8 ([5cdf9c6](https://github.com/MrWolfZ/ngrx-forms/commit/5cdf9c6))
+
+  It can be used as follows:
+
+  ```ts
+  import { createReducer } from '@ngrx/store';
+  import {
+    onNgrxForms,
+    onNgrxFormsAction,
+    SetValueAction,
+    updateGroup,
+    validate,
+    wrapReducerWithFormStateUpdate,
+  } from 'ngrx-forms';
+  import { required } from 'ngrx-forms/validation';
+
+  export interface LoginFormValue {
+    username: string;
+    password: string;
+    stayLoggedIn: boolean;
+  }
+
+  export const initialLoginFormValue: LoginFormValue = {
+    username: '',
+    password: '',
+    stayLoggedIn: false,
+  };
+
+  export const validateLoginForm = updateGroup<LoginFormValue>({
+    username: validate(required),
+    password: validate(required),
+  });
+
+  const reducer = createReducer(
+    {
+      loginForm: createFormGroupState('loginForm', initialLoginFormValue),
+      // your other properties...
+    },
+    onNgrxForms(),
+
+    // use this to call a reducer for a specific ngrx-forms action;
+    // note that this must be placed after onNgrxForms
+    onNgrxFormsAction(SetValueAction, (state, action) => {
+      if (action.controlId === 'loginForm.username') {
+        // react to username changing...
+        // action is of type SetValueAction
+      }
+
+      return state;
+    }),
+    // your other reducers...
+  );
+  ```
+
+<a name="5.1.0"></a>
+### 5.1.0
+
+#### Features
+
+* add functions `onNgrxForms` and `wrapReducerWithFormStateUpdate` to allow better integration with `createReducer` from ngrx 8 ([ac95be2](https://github.com/MrWolfZ/ngrx-forms/commit/ac95be2)), closes [#147](https://github.com/MrWolfZ/ngrx-forms/issues/147)
+
+  They can be used as follows:
+
+  ```ts
+  import { createReducer } from '@ngrx/store';
+  import { onNgrxForms, updateGroup, validate, wrapReducerWithFormStateUpdate } from 'ngrx-forms';
+  import { required } from 'ngrx-forms/validation';
+
+  export interface LoginFormValue {
+    username: string;
+    password: string;
+    stayLoggedIn: boolean;
+  }
+
+  export const initialLoginFormValue: LoginFormValue = {
+    username: '',
+    password: '',
+    stayLoggedIn: false,
+  };
+
+  export const validateLoginForm = updateGroup<LoginFormValue>({
+    username: validate(required),
+    password: validate(required),
+  });
+
+  const rawReducer = createReducer(
+    {
+      loginForm: createFormGroupState('loginForm', initialLoginFormValue),
+      // your other properties...
+    },
+    onNgrxForms(),
+    // your other reducers...
+  );
+
+  // wrapReducerWithFormStateUpdate calls the update function
+  // after the given reducer; you can wrap this reducer again
+  // if you have multiple forms in your state
+  export const reducer = wrapReducerWithFormStateUpdate(
+    rawReducer,
+    // point to the form state to update
+    s => s.loginForm,
+    // this function is always called after the reducer
+    validateLoginForm,
+  );
+  ```
+* add update functions for async validations ([8985e99](https://github.com/MrWolfZ/ngrx-forms/commit/8985e99))
+* export constant `ALL_NGRX_FORMS_ACTION_TYPES` that is an array of all action types ngrx-forms provides ([09aad36](https://github.com/MrWolfZ/ngrx-forms/commit/09aad36))
+
+#### Bugfixes
+
+* allow setting async errors if the validation is not pending ([3f5c6d0](https://github.com/MrWolfZ/ngrx-forms/commit/3f5c6d0))
+* allow clearing async errors on groups and arrays if the validation is not pending ([ff13472](https://github.com/MrWolfZ/ngrx-forms/commit/ff13472))
+
+<a name="5.0.3"></a>
+### 5.0.3
+
+#### Bugfixes
+
+* remove readonly modifier from array control state value ([28e781c](https://github.com/MrWolfZ/ngrx-forms/commit/28e781c)), thanks @dzonatan for reporting this bug, closes [#155](https://github.com/MrWolfZ/ngrx-forms/issues/155)
+
 <a name="5.0.2"></a>
 ### 5.0.2
 

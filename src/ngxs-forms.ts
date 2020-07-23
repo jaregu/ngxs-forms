@@ -23,7 +23,11 @@ export {
 export { formControlReducer } from './control/reducer';
 export { formGroupReducer } from './group/reducer';
 export { formArrayReducer } from './array/reducer';
-export { formStateReducer } from './reducer';
+export {
+  ActionConstructor,
+  CreatedAction,
+  formStateReducer,
+} from './reducer';
 
 export * from './update-function/update-array';
 export * from './update-function/update-group';
@@ -43,10 +47,15 @@ export * from './update-function/focus';
 export * from './update-function/unfocus';
 export * from './update-function/add-array-control';
 export * from './update-function/add-group-control';
+export * from './update-function/move-array-control';
+export * from './update-function/swap-array-control';
 export * from './update-function/remove-array-control';
 export * from './update-function/remove-group-control';
 export * from './update-function/set-user-defined-property';
 export * from './update-function/reset';
+export * from './update-function/start-async-validation';
+export * from './update-function/set-async-error';
+export * from './update-function/clear-async-error';
 
 export { compose, ProjectFn, ProjectFn2 } from './update-function/util';
 
@@ -60,8 +69,10 @@ export { NgrxRangeViewAdapter } from './view-adapter/range';
 export { NgrxSelectViewAdapter, NgrxSelectOption } from './view-adapter/select';
 export { NgrxSelectMultipleViewAdapter, NgrxSelectMultipleOption } from './view-adapter/select-multiple';
 
-export { NgrxFormControlDirective } from './control/directive';
+export { NgrxFormControlDirective, NGRX_UPDATE_ON_TYPE } from './control/directive';
+export { NgrxLocalFormControlDirective } from './control/local-state-directive';
 export { NgrxFormDirective } from './group/directive';
+export { NgrxLocalFormDirective } from './group/local-state-directive';
 
 export { NgrxValueConverter, NgrxValueConverters } from './control/value-converter';
 

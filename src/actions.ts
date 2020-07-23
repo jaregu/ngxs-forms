@@ -258,3 +258,29 @@ export type Actions<TValue> =
 export function isNgrxFormsAction(action: any) {
   return !!action.type && action.type.startsWith('ngrx/forms/');
 }
+
+export const ALL_NGRX_FORMS_ACTION_TYPES: Actions<any>['type'][] = [
+  SetValueAction.type,
+  SetErrorsAction.type,
+  SetAsyncErrorAction.type,
+  ClearAsyncErrorAction.type,
+  StartAsyncValidationAction.type,
+  MarkAsDirtyAction.type,
+  MarkAsPristineAction.type,
+  EnableAction.type,
+  DisableAction.type,
+  MarkAsTouchedAction.type,
+  MarkAsUntouchedAction.type,
+  FocusAction.type,
+  UnfocusAction.type,
+  MarkAsSubmittedAction.type,
+  MarkAsUnsubmittedAction.type,
+  AddGroupControlAction.type,
+  RemoveGroupControlAction.type,
+  AddArrayControlAction.type,
+  RemoveArrayControlAction.type,
+  SetUserDefinedPropertyAction.type,
+  ResetAction.type,
+  SwapArrayControlAction.type,
+  MoveArrayControlAction.type,
+];

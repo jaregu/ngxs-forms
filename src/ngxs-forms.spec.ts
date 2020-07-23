@@ -1,7 +1,9 @@
 import {
   addArrayControl,
   addGroupControl,
+  ALL_NGRX_FORMS_ACTION_TYPES,
   box,
+  clearAsyncError,
   compose,
   createFormArrayState,
   createFormControlState,
@@ -22,12 +24,15 @@ import {
   markAsTouched,
   markAsUnsubmitted,
   markAsUntouched,
+  moveArrayControl,
   NGRX_STATUS_CLASS_NAMES,
   NgrxCheckboxViewAdapter,
   NgrxDefaultViewAdapter,
   NgrxFallbackSelectOption,
   NgrxFormControlDirective,
   NgrxFormDirective,
+  NgrxLocalFormControlDirective,
+  NgrxLocalFormDirective,
   NgrxNumberViewAdapter,
   NgrxRadioViewAdapter,
   NgrxRangeViewAdapter,
@@ -41,9 +46,12 @@ import {
   removeArrayControl,
   removeGroupControl,
   reset,
+  setAsyncError,
   setErrors,
   setUserDefinedProperty,
   setValue,
+  startAsyncValidation,
+  swapArrayControl,
   unbox,
   unfocus,
   updateArray,
@@ -53,6 +61,7 @@ import {
 } from './ngxs-forms';
 
 describe('ngxs-forms', () => {
+  it(`should export ALL_NGRX_FORMS_ACTION_TYPES`, () => expect(ALL_NGRX_FORMS_ACTION_TYPES).toBeDefined());
   it(`should export ${compose.name}`, () => expect(compose).toBeDefined());
   it(`should export ${isArrayState.name}`, () => expect(isArrayState).toBeDefined());
   it(`should export ${isGroupState.name}`, () => expect(isGroupState).toBeDefined());
@@ -65,6 +74,7 @@ describe('ngxs-forms', () => {
   it(`should export ${formStateReducer.name}`, () => expect(formStateReducer).toBeDefined());
   it(`should export ${addArrayControl.name}`, () => expect(addArrayControl).toBeDefined());
   it(`should export ${addGroupControl.name}`, () => expect(addGroupControl).toBeDefined());
+  it(`should export ${clearAsyncError.name}`, () => expect(clearAsyncError).toBeDefined());
   it(`should export ${disable.name}`, () => expect(disable).toBeDefined());
   it(`should export ${enable.name}`, () => expect(enable).toBeDefined());
   it(`should export ${focus.name}`, () => expect(focus).toBeDefined());
@@ -74,12 +84,16 @@ describe('ngxs-forms', () => {
   it(`should export ${markAsTouched.name}`, () => expect(markAsTouched).toBeDefined());
   it(`should export ${markAsUnsubmitted.name}`, () => expect(markAsUnsubmitted).toBeDefined());
   it(`should export ${markAsUntouched.name}`, () => expect(markAsUntouched).toBeDefined());
+  it(`should export ${moveArrayControl.name}`, () => expect(moveArrayControl).toBeDefined());
   it(`should export ${removeArrayControl.name}`, () => expect(removeArrayControl).toBeDefined());
   it(`should export ${removeGroupControl.name}`, () => expect(removeGroupControl).toBeDefined());
   it(`should export ${reset.name}`, () => expect(reset).toBeDefined());
+  it(`should export ${setAsyncError.name}`, () => expect(setAsyncError).toBeDefined());
   it(`should export ${setErrors.name}`, () => expect(setErrors).toBeDefined());
   it(`should export ${setUserDefinedProperty.name}`, () => expect(setUserDefinedProperty).toBeDefined());
   it(`should export ${setValue.name}`, () => expect(setValue).toBeDefined());
+  it(`should export ${startAsyncValidation.name}`, () => expect(startAsyncValidation).toBeDefined());
+  it(`should export ${swapArrayControl.name}`, () => expect(swapArrayControl).toBeDefined());
   it(`should export ${unfocus.name}`, () => expect(unfocus).toBeDefined());
   it(`should export ${updateArray.name}`, () => expect(updateArray).toBeDefined());
   it(`should export ${updateGroup.name}`, () => expect(updateGroup).toBeDefined());
@@ -87,8 +101,10 @@ describe('ngxs-forms', () => {
   it(`should export ${validate.name}`, () => expect(validate).toBeDefined());
   it(`should export NGRX_STATUS_CLASS_NAMES`, () => expect(NGRX_STATUS_CLASS_NAMES).toBeDefined());
   it(`should export ${NgrxFormControlDirective.name}`, () => expect(NgrxFormControlDirective).toBeDefined());
+  it(`should export ${NgrxLocalFormControlDirective.name}`, () => expect(NgrxLocalFormControlDirective).toBeDefined());
   it(`should export NgrxValueConverters`, () => expect(NgrxValueConverters).toBeDefined());
   it(`should export ${NgrxFormDirective.name}`, () => expect(NgrxFormDirective).toBeDefined());
+  it(`should export ${NgrxLocalFormDirective.name}`, () => expect(NgrxLocalFormDirective).toBeDefined());
   it(`should export ${NgrxDefaultViewAdapter.name}`, () => expect(NgrxDefaultViewAdapter).toBeDefined());
   it(`should export ${NgrxCheckboxViewAdapter.name}`, () => expect(NgrxCheckboxViewAdapter).toBeDefined());
   it(`should export ${NgrxNumberViewAdapter.name}`, () => expect(NgrxNumberViewAdapter).toBeDefined());

@@ -36,6 +36,13 @@ describe(NgrxFormDirective.name, () => {
     expect(() => directive.ngOnInit()).toThrowError();
   });
 
+  it('should throw while trying to emit actions if no store was provided', () => {
+    directive = new NgrxFormDirective<{}>(null as any as Store);
+    directive.state = INITIAL_STATE;
+    directive.ngOnInit();
+    expect(() => directive.onSubmit({ preventDefault: () => void 0 } as any)).toThrowError();
+  });
+
   it(`should dispatch a ${MarkAsSubmittedAction.name} if the form is submitted and the state is unsubmitted`, done => {
     actions$.pipe(take(1), map(a => a.action)).subscribe(a => {
       expect(a).toEqual(new MarkAsSubmittedAction(INITIAL_STATE.id));

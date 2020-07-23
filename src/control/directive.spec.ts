@@ -1,9 +1,10 @@
 import { ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { ControlValueAccessor } from '@angular/forms';
 import { Actions, NgxsModule, ofActionSuccessful, Store } from '@ngxs/store';
 import { Subject } from 'rxjs';
-import { count, first, map, takeUntil } from 'rxjs/operators';
+import { count, first, skip, map, takeUntil } from 'rxjs/operators';
 
 import { FocusAction, MarkAsDirtyAction, MarkAsTouchedAction, SetValueAction, UnfocusAction } from '../actions';
 import { createFormControlState } from '../state';
@@ -20,7 +21,7 @@ describe(NgrxFormControlDirective.name, () => {
   let document: Document;
   let store: Store;
   let actions$: Actions;
-  let viewAdapter: FormViewAdapter;
+  let viewAdapter: Required<FormViewAdapter>;
   let onChange: (value: any) => void;
   let onTouched: () => void;
   const actionsFinished = new Subject<any>();
@@ -47,7 +48,7 @@ describe(NgrxFormControlDirective.name, () => {
       setOnTouchedCallback: fn => onTouched = fn,
       setIsDisabled: () => void 0,
     };
-    directive = new NgrxFormControlDirective<string>(elementRef, document, store, [viewAdapter], []);
+    directive = new NgrxFormControlDirective<string | null>(elementRef, document, store as any, [viewAdapter], []);
     directive.ngrxFormControlState = INITIAL_STATE;
   });
 
@@ -56,8 +57,16 @@ describe(NgrxFormControlDirective.name, () => {
   });
 
   it('should throw if state is not set when component is initialized', () => {
-    directive = new NgrxFormControlDirective<string>(elementRef, document, store, [viewAdapter], []);
+    directive = new NgrxFormControlDirective<string | null>(elementRef, document, store as any, [viewAdapter], []);
     expect(() => directive.ngOnInit()).toThrowError();
+  });
+
+  it('should throw while trying to emit actions if no ActionsSubject was provided', () => {
+    directive = new NgrxFormControlDirective<string | null>(elementRef, document, null as any as Store, [viewAdapter], []);
+    directive.ngrxFormControlState = INITIAL_STATE;
+    directive.ngOnInit();
+    const newValue = 'new value';
+    expect(() => onChange(newValue)).toThrowError();
   });
 
   describe('writing values and dispatching value and dirty actions', () => {
@@ -190,7 +199,7 @@ describe(NgrxFormControlDirective.name, () => {
         ...viewAdapter,
         setViewValue: v => expect(v).toEqual(convertedValue),
       };
-      directive = new NgrxFormControlDirective<string>(elementRef, document, store as any, [viewAdapter], []);
+      directive = new NgrxFormControlDirective<string | null>(elementRef, document, store as any, [viewAdapter], []);
       directive.ngrxFormControlState = INITIAL_STATE;
       directive.ngrxValueConverter = {
         convertStateToViewValue: () => convertedValue,
@@ -341,7 +350,7 @@ describe(NgrxFormControlDirective.name, () => {
     });
 
     it('should not throw if setIsDisabled is not defined', () => {
-      viewAdapter.setIsDisabled = undefined;
+      (viewAdapter as FormViewAdapter).setIsDisabled = undefined;
       expect(() => directive.ngrxFormControlState = { ...INITIAL_STATE, isEnabled: false, isDisabled: true }).not.toThrow();
     });
   });
@@ -572,7 +581,7 @@ describe(NgrxFormControlDirective.name, () => {
 
   describe('non-browser platforms', () => {
     beforeEach(() => {
-      directive = new NgrxFormControlDirective<string>(elementRef, null, store as any, [viewAdapter], []);
+      directive = new NgrxFormControlDirective<string | null>(elementRef, null, store as any, [viewAdapter], []);
       directive.ngrxFormControlState = INITIAL_STATE;
     });
 
@@ -590,7 +599,7 @@ describe(NgrxFormControlDirective.name, () => {
         'setDisabledState',
       ]);
 
-      directive = new NgrxFormControlDirective<string>(elementRef, document, store as any, null as any, [controlValueAccessor]);
+      directive = new NgrxFormControlDirective<string | null>(elementRef, document, store as any, null as any, [controlValueAccessor]);
 
       directive.state = { ...INITIAL_STATE, isDisabled: true, isEnabled: false };
       directive.ngOnInit();
@@ -607,14 +616,14 @@ describe(NgrxFormControlDirective.name, () => {
         'registerOnTouched',
       ]);
 
-      directive = new NgrxFormControlDirective<string>(elementRef, document, store as any, null as any, [controlValueAccessor]);
-
+      directive = new NgrxFormControlDirective<string | null>(elementRef, document, store as any, null as any, [controlValueAccessor]);
+      
       directive.state = { ...INITIAL_STATE, isDisabled: true, isEnabled: false };
       expect(() => directive.ngOnInit()).not.toThrow();
     });
 
     it('should throw if more than one control value accessor is provided', () => {
-      expect(() => new NgrxFormControlDirective<string>(elementRef, document, store as any, [], [{} as any, {} as any])).toThrowError();
+      expect(() => new NgrxFormControlDirective<string | null>(elementRef, document, store as any, [], [{} as any, {} as any])).toThrowError();
     });
   });
 });

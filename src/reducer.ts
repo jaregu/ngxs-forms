@@ -2,6 +2,7 @@ import { formArrayReducer } from './array/reducer';
 import { formControlReducer } from './control/reducer';
 import { formGroupReducer } from './group/reducer';
 import { AbstractControlState, FormControlState, FormState, isArrayState, isFormState, isGroupState } from './state';
+import { Actions } from './actions';
 
 export function formStateReducer<TValue>(
   state: FormState<TValue> | AbstractControlState<TValue> | undefined,
@@ -25,3 +26,11 @@ export function formStateReducer<TValue>(
 
   return formControlReducer(state as FormControlState<any>, action) as any;
 }
+
+export interface ActionConstructor {
+  new(...args: any[]): Actions<any>;
+  readonly TYPE: string;
+}
+
+export type CreatedAction<TActionCons> = TActionCons extends new (...args: any[]) => infer TAction ? TAction : never;
+

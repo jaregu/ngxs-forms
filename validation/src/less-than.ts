@@ -14,28 +14,28 @@ declare module 'ngxs-forms/src/state' {
 
 /**
  * A validation function that requires the value to be less than a number.
- * Considers `null` and `undefined` as valid. Combine this function with the `required`
+ * Considers `null`, `undefined` and non-numeric values as valid. Combine this function with the `required`
  * validation function if `null` or `undefined` should be considered invalid.
  *
  * The validation error returned by this validation function has the following shape:
  *
- * ```typescript
- * {
- *   lessThan: {
- *     comparand: number;
- *     actual: number;
- *   };
- * }
- * ```
+```typescript
+{
+  lessThan: {
+    comparand: number;
+    actual: number;
+  };
+}
+```
  *
  * Usually you would use this validation function in conjunction with the `validate`
  * update function to perform synchronous validation in your reducer:
  *
- * ```typescript
- * updateGroup<MyFormValue>({
- *  amount: validate(lessThan(10)),
- * })
- * ```
+```typescript
+updateGroup<MyFormValue>({
+  amount: validate(lessThan(10)),
+})
+```
  *
  * Note that this function is generic to allow the compiler to properly infer the type
  * of the `validate` function for both optional and non-optional controls.
@@ -49,7 +49,7 @@ export function lessThan(comparand: number) {
   return <T extends number | Boxed<number> | null | undefined>(value: T): ValidationErrors => {
     value = unbox(value) as number | null | undefined as T;
 
-    if (value === null || value === undefined) {
+    if (value === null || value === undefined || typeof value !== 'number') {
       return {};
     }
 

@@ -2,8 +2,10 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NGXS_PLUGINS } from '@ngxs/store';
 
 import { NgrxFormControlDirective } from './control/directive';
+import { NgrxLocalFormControlDirective } from './control/local-state-directive';
 import { NgrxFormDirective } from './group/directive';
 import { NgxsFormsPlugin } from './ngxs-forms.plugin';
+import { NgrxLocalFormDirective } from './group/local-state-directive';
 import { NgrxStatusCssClassesDirective } from './status-css-classes.directive';
 import { NgrxCheckboxViewAdapter } from './view-adapter/checkbox';
 import { NgrxDefaultViewAdapter } from './view-adapter/default';
@@ -16,7 +18,9 @@ import { NgrxSelectMultipleOption, NgrxSelectMultipleViewAdapter } from './view-
 
 const exportsAndDeclarations = [
   NgrxFormControlDirective,
+  NgrxLocalFormControlDirective,
   NgrxFormDirective,
+  NgrxLocalFormDirective,
   NgrxCheckboxViewAdapter,
   NgrxDefaultViewAdapter,
   NgrxNumberViewAdapter,
