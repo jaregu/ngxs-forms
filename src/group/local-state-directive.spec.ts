@@ -1,6 +1,7 @@
-import { Action } from '@ngrx/store';
-import { Observable, ReplaySubject } from 'rxjs';
-import { count, take } from 'rxjs/operators';
+import { TestBed } from '@angular/core/testing';
+import { Actions, NgxsModule } from '@ngxs/store';
+import { Subject } from 'rxjs';
+import { count, take, takeUntil } from 'rxjs/operators';
 
 import { MarkAsSubmittedAction } from '../actions';
 import { createFormGroupState } from '../state';
@@ -8,15 +9,21 @@ import { NgrxLocalFormDirective } from './local-state-directive';
 
 describe(NgrxLocalFormDirective.name, () => {
   let directive: NgrxLocalFormDirective<{}>;
-  let actionsSubject: ReplaySubject<Action>;
-  let actions$: Observable<Action>;
+	let actions$: Actions;
+	const actionsFinished = new Subject<any>();
+  const actionsFinish = () => actionsFinished.next('Finished');
   const FORM_GROUP_ID = 'test ID';
   const INITIAL_FORM_CONTROL_VALUE = {};
   const INITIAL_STATE = createFormGroupState<{}>(FORM_GROUP_ID, INITIAL_FORM_CONTROL_VALUE);
 
+	beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot()],
+    });
+	});
+
   beforeEach(() => {
-    actionsSubject = new ReplaySubject<Action>();
-    actions$ = actionsSubject;
+		actions$ = TestBed.get(Actions);
     directive = new NgrxLocalFormDirective<{}>();
     directive.state = INITIAL_STATE;
     directive.ngOnInit();
@@ -24,13 +31,14 @@ describe(NgrxLocalFormDirective.name, () => {
 
   describe('local action emit', () => {
     it(`should not dispatch a ${MarkAsSubmittedAction.name} to the global store if the form is submitted and the state is unsubmitted`, done => {
-      actions$.pipe(count()).subscribe(c => {
+
+			actions$.pipe(takeUntil(actionsFinished), count()).subscribe(c => {
         expect(c).toEqual(0);
         done();
       });
 
-      directive.onSubmit({ preventDefault: () => void 0 } as any);
-      actionsSubject.complete();
+			directive.onSubmit({ preventDefault: () => void 0 } as any);
+			actionsFinish();
     });
 
     it(`should dispatch a ${MarkAsSubmittedAction.name} to the event emitter if the form is submitted and the state is unsubmitted`, done => {
@@ -43,14 +51,14 @@ describe(NgrxLocalFormDirective.name, () => {
     });
 
     it(`should not dispatch a ${MarkAsSubmittedAction.name} to the global store if the form is submitted and the state is submitted`, done => {
-      actions$.pipe(count()).subscribe(c => {
+			actions$.pipe(takeUntil(actionsFinished), count()).subscribe(c => {
         expect(c).toEqual(0);
         done();
       });
 
       directive.state = { ...INITIAL_STATE, isSubmitted: true, isUnsubmitted: false };
       directive.onSubmit({ preventDefault: () => void 0 } as any);
-      actionsSubject.complete();
+      actionsFinish();
     });
 
     it(`should not dispatch a ${MarkAsSubmittedAction.name} to the event emitter if the form is submitted and the state is submitted`, done => {

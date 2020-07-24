@@ -1,12 +1,13 @@
 import { ElementRef } from '@angular/core';
-import { Action } from '@ngrx/store';
-import { Observable, ReplaySubject } from 'rxjs';
-import { count, first } from 'rxjs/operators';
+import { TestBed } from '@angular/core/testing';
+import { Actions, NgxsModule } from '@ngxs/store';
+import { count, first, takeUntil } from 'rxjs/operators';
 
 import { SetValueAction } from '../actions';
 import { createFormControlState } from '../state';
 import { FormViewAdapter } from '../view-adapter/view-adapter';
 import { NgrxLocalFormControlDirective } from './local-state-directive';
+import { Subject } from 'rxjs';
 
 // tslint:disable:no-unbound-method
 
@@ -15,20 +16,26 @@ describe(NgrxLocalFormControlDirective.name, () => {
   let elementRef: ElementRef;
   let nativeElement: HTMLElement;
   let document: Document;
-  let actionsSubject: ReplaySubject<Action>;
-  let actions$: Observable<Action>;
+	let actions$: Actions;
+	const actionsFinished = new Subject<any>();
+  const actionsFinish = () => actionsFinished.next('Finished');
   let viewAdapter: FormViewAdapter;
   let onChange: (value: any) => void;
   const FORM_CONTROL_ID = 'test ID';
   const INITIAL_FORM_CONTROL_VALUE = 'value';
   const INITIAL_STATE = createFormControlState<string>(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
+	beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot()],
+    });
+	});
+
   beforeEach(() => {
+		actions$ = TestBed.get(Actions);
     nativeElement = jasmine.createSpyObj('nativeElement', ['focus', 'blur']);
     elementRef = { nativeElement } as any as ElementRef;
     document = {} as any as Document;
-    actionsSubject = new ReplaySubject<Action>();
-    actions$ = actionsSubject as any; // required due to mismatch of lift() function signature
     viewAdapter = {
       setViewValue: () => void 0,
       setOnChangeCallback: fn => onChange = fn,
@@ -47,13 +54,13 @@ describe(NgrxLocalFormControlDirective.name, () => {
     it(`should not dispatch a ${SetValueAction.name} to the global store if the view value changes`, done => {
       const newValue = 'new value';
 
-      actions$.pipe(count()).subscribe(c => {
+			actions$.pipe(takeUntil(actionsFinished), count()).subscribe(c => {
         expect(c).toEqual(0);
         done();
       });
 
       onChange(newValue);
-      actionsSubject.complete();
+      actionsFinish();
     });
 
     it(`should dispatch a ${SetValueAction.name} to the output event emitter if the view value changes`, done => {
@@ -68,13 +75,13 @@ describe(NgrxLocalFormControlDirective.name, () => {
     });
 
     it(`should not dispatch a ${SetValueAction.name} to the global store if the view value is the same as the state`, done => {
-      actions$.pipe(count()).subscribe(c => {
+      actions$.pipe(takeUntil(actionsFinished), count()).subscribe(c => {
         expect(c).toEqual(0);
         done();
       });
 
       onChange(INITIAL_STATE.value);
-      actionsSubject.complete();
+      actionsFinish();
     });
 
     it(`should not dispatch a ${SetValueAction.name} to the output event emitter if the view value is the same as the state`, done => {

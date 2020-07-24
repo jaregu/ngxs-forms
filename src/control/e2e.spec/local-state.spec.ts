@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Action, ActionsSubject } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { count } from 'rxjs/operators';
+import { Actions, NgxsModule } from '@ngxs/store';
+import { Subject } from 'rxjs';
+import { count, takeUntil } from 'rxjs/operators';
 
 import { MarkAsDirtyAction } from '../../actions';
-import { NgrxFormsModule } from '../../module';
 import { createFormControlState, FormControlState } from '../../state';
+import { NgxsFormsModule } from 'src/module';
 
 const SELECT_NUMBER_OPTIONS = [1, 2];
 
@@ -22,8 +22,8 @@ export class NumberSelectComponentLocalStateComponent {
   @Input() state: FormControlState<number>;
   options = SELECT_NUMBER_OPTIONS;
 
-  action: Action | null = null;
-  handleAction(actionParam: Action) {
+  action: any | null = null;
+  handleAction(actionParam: any) {
     this.action = actionParam;
   }
 }
@@ -31,28 +31,30 @@ export class NumberSelectComponentLocalStateComponent {
 describe(NumberSelectComponentLocalStateComponent.name, () => {
   let component: NumberSelectComponentLocalStateComponent;
   let fixture: ComponentFixture<NumberSelectComponentLocalStateComponent>;
-  let actionsSubject: ActionsSubject;
-  let actions$: Observable<Action>;
-  let element: HTMLSelectElement;
+  let actions$: Actions;
+	let element: HTMLSelectElement;
+	const actionsFinished = new Subject<any>();
+  const actionsFinish = () => actionsFinished.next('Finished');
   const FORM_CONTROL_ID = 'test ID';
   const INITIAL_FORM_CONTROL_VALUE = SELECT_NUMBER_OPTIONS[1];
   const INITIAL_STATE = createFormControlState(FORM_CONTROL_ID, INITIAL_FORM_CONTROL_VALUE);
 
-  beforeEach(() => {
-    actionsSubject = new Subject<Action>() as ActionsSubject;
-    actions$ = actionsSubject as Observable<Action>; // cast required due to mismatch of lift() function signature
-  });
+	beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot()],
+    });
+	});
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NgrxFormsModule],
+		TestBed.configureTestingModule({
+      imports: [NgxsFormsModule],
       declarations: [NumberSelectComponentLocalStateComponent],
-      providers: [{ provide: ActionsSubject, useValue: actionsSubject }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NumberSelectComponentLocalStateComponent);
+		fixture = TestBed.createComponent(NumberSelectComponentLocalStateComponent);
+		actions$ = TestBed.get(Actions);
     component = fixture.componentInstance;
     component.state = INITIAL_STATE;
     fixture.detectChanges();
@@ -61,14 +63,15 @@ describe(NumberSelectComponentLocalStateComponent.name, () => {
   });
 
   it(`should not trigger a ${MarkAsDirtyAction.name} to the global store when an option is selected`, done => {
-    actions$.pipe(count()).subscribe(c => {
-      expect(c).toEqual(0);
-      done();
-    });
+
+		actions$.pipe(takeUntil(actionsFinished), count()).subscribe(c => {
+			expect(c).toEqual(0);
+			done();
+		});
 
     element.selectedIndex = 0;
     element.dispatchEvent(new Event('change'));
-    actionsSubject.complete();
+    actionsFinish();
   });
 
   it(`should trigger a ${MarkAsDirtyAction.name} to the event emitter when an option is selected`, () => {
@@ -76,6 +79,6 @@ describe(NumberSelectComponentLocalStateComponent.name, () => {
     element.dispatchEvent(new Event('change'));
 
     expect(component.action).toBeTruthy();
-    expect(component.action!.type).toBe(MarkAsDirtyAction.TYPE);
+    expect(component.action!.type).toBe(MarkAsDirtyAction.type);
   });
 });

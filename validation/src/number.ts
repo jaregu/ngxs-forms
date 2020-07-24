@@ -1,4 +1,4 @@
-import { Boxed, unbox, ValidationErrors } from 'ngrx-forms';
+import { Boxed, unbox, ValidationErrors } from 'ngxs-forms';
 
 export interface NumberValidationError<T> {
   actual: T;

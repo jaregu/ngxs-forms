@@ -40,7 +40,7 @@ const exportsAndDeclarations = [
 })
 export class NgxsFormsModule {
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<NgxsFormsModule> {
     return {
       ngModule: NgxsFormsModule,
       providers: [

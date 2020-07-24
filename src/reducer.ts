@@ -1,7 +1,14 @@
 import { formArrayReducer } from './array/reducer';
 import { formControlReducer } from './control/reducer';
 import { formGroupReducer } from './group/reducer';
-import { AbstractControlState, FormControlState, FormState, isArrayState, isFormState, isGroupState } from './state';
+import { 
+	AbstractControlState, 
+	FormControlState,
+	FormArrayState,
+	FormState, 
+	isArrayState, 
+	isFormState, 
+	isGroupState } from './state';
 import { Actions } from './actions';
 
 export function formStateReducer<TValue>(
@@ -21,7 +28,8 @@ export function formStateReducer<TValue>(
   }
 
   if (isArrayState(state)) {
-    return formArrayReducer(state, action) as any;
+		const arrayState: FormArrayState<any> = state;
+    return formArrayReducer(arrayState, action) as any;
   }
 
   return formControlReducer(state as FormControlState<any>, action) as any;

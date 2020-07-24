@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { ControlValueAccessor } from '@angular/forms';
 import { Actions, NgxsModule, ofActionSuccessful, Store } from '@ngxs/store';
 import { Subject } from 'rxjs';
-import { count, first, skip, map, takeUntil } from 'rxjs/operators';
+import { count, first, map, takeUntil } from 'rxjs/operators';
 
 import { FocusAction, MarkAsDirtyAction, MarkAsTouchedAction, SetValueAction, UnfocusAction } from '../actions';
 import { createFormControlState } from '../state';
