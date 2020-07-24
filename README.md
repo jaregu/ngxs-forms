@@ -82,6 +82,7 @@ const initialState: StateModel = {
   name: 'someSpecialState',
   defaults: initialState
 })
+@Injectable()
 export class SpecialState {
   
   // ...
