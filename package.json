@@ -25,7 +25,7 @@
     "lib": {
       "entryFile": "public_api.ts",
       "umdModuleIds": {
-        "@ngrx/store": "ngrx.store"
+        "@ngxs/store": "ngxs.store"
       }
     }
   },
