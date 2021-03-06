@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { getActionTypeFromInstance, getValue, InitState, NgxsPlugin, setValue, UpdateState } from '@ngxs/store';
 
 import { isNgrxFormsAction } from './actions';
-import { formGroupReducer } from './group/reducer';
+import { formStateReducer } from './reducer';
 
 @Injectable()
 export class NgxsFormsPlugin implements NgxsPlugin {
@@ -31,7 +31,7 @@ export class NgxsFormsPlugin implements NgxsPlugin {
           const formStateKey = this.formIdToStateKey[formId];
           if (formStateKey) {
             const existingFormState = getValue(state, formStateKey);
-            const updatedFormState = formGroupReducer(existingFormState, action);
+            const updatedFormState = formStateReducer(existingFormState, action);
             if (existingFormState !== updatedFormState) {
               nextState = setValue(nextState, formStateKey, updatedFormState);
             }
